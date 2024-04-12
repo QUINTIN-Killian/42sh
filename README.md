@@ -7,7 +7,7 @@ Repository for the EPITECH 42sh project.
 #### Branches :
 - We don't code on the 'main' branch
 - We don't code on the 'dev' branch
-- We create branches with the following name pattern : feat/"name"
+- We create branches with the following name pattern : FEAT/"name"
 - We merge our branches on the 'dev' branch and merge 'dev' on 'main' with the agreement of everybody
 
 ## Links :
