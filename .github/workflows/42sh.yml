@@ -5,7 +5,11 @@ env :
   CURRENT_URL: "git@github.com:${{ github.repository }}.git"
   EXECUTABLES: "42sh"
 
-on: [push, merge]
+on:
+  push:
+    branches:
+      - 'main'
+      - 'dev'
 
 jobs:
   check_coding_style:
