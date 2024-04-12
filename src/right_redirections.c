@@ -16,7 +16,7 @@ static bool is_same_file(shell_t *shell, char *filename,
 
     if (ind <= 0 || stat(filename, &st) == -1 || st.st_size == 0)
         return false;
-    tmp = separate_words_on_spaces(command_array_sep[ind - 1]);
+    tmp = sep_str(command_array_sep[ind - 1], 2, "\t", " ");
     for (int i = my_strlen_array(tmp) - 1; i >= 0; i--) {
         if (my_strcmp(tmp[i], filename) == 0) {
             free_word_array(tmp);
@@ -30,7 +30,7 @@ static bool is_same_file(shell_t *shell, char *filename,
 
 static void error_same_file(char **command_array_sep, int i, char **filename)
 {
-    char **tmp = separate_words_on_spaces(command_array_sep[i - 1]);
+    char **tmp = sep_str(command_array_sep[i - 1], 2, "\t", " ");
 
     mini_printf("%s: %s: input file is output file\n",
     tmp[0], filename[0]);
