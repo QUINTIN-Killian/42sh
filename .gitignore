@@ -2,5 +2,3 @@ lib/my/bin
 bin
 libmy.a
 42sh
-.git
-.vscode
