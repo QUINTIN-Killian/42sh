@@ -1,0 +1,86 @@
+name: 42sh_actions
+
+env :
+  EPITECH_URL: "git@github.com:EpitechPromo2028/B-PSU-200-LYN-2-1-42sh-florian.reynaud.git"
+  CURRENT_URL: "git@github.com:${{ github.repository }}.git"
+  EXECUTABLES: "42sh"
+
+on: [push, merge]
+
+jobs:
+  check_coding_style:
+    name: Coding style checking job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Are we in the EPITECH repository ?
+        run: |
+          if [ ${{ env.EPITECH_URL }} == ${{ env.CURRENT_URL }} ]; then
+            echo "We are in the EPITECH 42sh repository. Exiting."
+            exit 1
+          fi
+      - name: Repository checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run coding style
+        run: coding-style $(pwd) $(pwd)
+      - name: Check coding style
+        run: |
+          while IFS= read -r line; do
+            error_name=$(echo "$line" | cut -d ':' -f3)
+            file=$(echo "$line" | cut -d ':' -f1)
+            error_line=$(echo "$line" | cut -d ':' -f2)
+            error_nbr=$(echo "$line" | cut -d ':' -f4)
+            echo "::error title=${error_name} coding style error,file=${file},line=${error_line}::${error_nbr}"
+          done < "coding-style-reports.log"
+          if [ "$(cat coding-style-reports.log | wc -l)" != 0 ]; then
+            rm -f coding-style-reports.log
+            exit 1
+          fi
+          rm -f coding-style-reports.log
+
+  check_program_compilation:
+    name: Program compilation checking job
+    runs-on: ubuntu-latest
+    needs: check_coding_style
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Make
+        run: make
+        timeout-minutes: 2
+      - name: Make clean
+        run: make clean
+      - name: Search executable files
+        run: |
+          IFS=',' read -ra executables <<< "${{ env.EXECUTABLES }}"
+          for ex in "${executables[@]}"; do
+            find . -type f -name "$ex" -executable -print -quit | grep -s "$ex"
+            if [ "$?" -ne "0" ]; then
+              make fclean
+              exit 1
+            fi
+          done
+          make fclean
+
+  push_to_mirror:
+    name: Mirroring job
+    runs-on: ubuntu-latest
+    needs: run_tests
+    if: github.event_name == 'push'
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exclusion
+        run: du -skh --exclude=".git"
+      - name: Mirroring
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            ${{ env.EPITECH_URL }}
+          ssh_private_key:
+            ${{ secrets.GIT_SSH_PRIVATE_KEY }}
