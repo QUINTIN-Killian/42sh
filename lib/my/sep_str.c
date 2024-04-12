@@ -67,7 +67,22 @@ static void move_forward_ind_start(char const *str, char **sep, int *ind_start)
     while (*ind_start < my_strlen(str) && is_sep(str, sep, ind_start));
 }
 
-static char *get_separated_word(char const *str, char **sep, int *ind_start)
+static char *get_separated_word2(char const *str, int *ind_start, int ans,
+    int i)
+{
+    char *tmp;
+
+    if (ans) {
+        tmp = parse_str(str, *ind_start, i - ans);
+        if (tmp == NULL)
+            return NULL;
+        *ind_start = i;
+        return tmp;
+    }
+    return NULL;
+}
+
+char *get_separated_word(char const *str, char **sep, int *ind_start)
 {
     char *tmp;
     int ans;
@@ -76,13 +91,9 @@ static char *get_separated_word(char const *str, char **sep, int *ind_start)
         return NULL;
     for (int i = *ind_start; i < my_strlen(str); i++) {
         ans = is_sep(str, sep, &i);
-        if (ans) {
-            tmp = parse_str(str, *ind_start, i - ans);
-            if (tmp == NULL)
-                continue;
-            *ind_start = i;
+        tmp = get_separated_word2(str, ind_start, ans, i);
+        if (tmp != NULL)
             return tmp;
-        }
     }
     tmp = parse_str(str, *ind_start, my_strlen(str));
     if (tmp == NULL)
