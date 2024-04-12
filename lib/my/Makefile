@@ -66,7 +66,6 @@ SRC	=	clean_str.c \
 		separate_words_on_spaces.c  \
 		separate_words_on_str.c
 
-
 OBJ	=	$(SRC:%.c=bin/%.o)
 
 CFLAGS	=	-g3 -W -Wall
