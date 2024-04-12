@@ -1,11 +1,12 @@
 # 42sh-private
+----------
 Private repository for the EPITECH 42sh project.
 
 
 ## Rules :
-### Commits standard :
+#### Commits standard :
 [ADD/FIX/FEAT/DEL/TEST/...] "description" (ex : [FIX] coding style)
-### Branches :
+#### Branches :
 - We don't code on the 'main' branch
 - We don't code on the 'dev' branch
 - We create branches with the following name pattern : feat/"name"
@@ -18,5 +19,5 @@ Private repository for the EPITECH 42sh project.
 
 
 
-#### Credits :
+##### Credits :
 Project created by QUINTIN Killian, ROBERT Max, JOLIVET William & REYNAUD Florian
