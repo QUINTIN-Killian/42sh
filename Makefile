@@ -26,6 +26,8 @@ OBJ	=	$(SRC:src/%.c=bin/%.o)
 
 CFLAGS	=	-g3 -W -Wall
 
+LIB_NAME	=	libmy.a
+
 EXEC	=	42sh
 
 all:	compile_lib $(EXEC)
@@ -33,7 +35,7 @@ all:	compile_lib $(EXEC)
 compile_lib:
 	make -C lib/my
 
-$(EXEC):	$(OBJ)
+$(EXEC):	$(LIB_NAME) $(OBJ)
 	$(CC) -o $(EXEC) $(OBJ) -L. -lmy $(CFLAGS)
 
 bin/%.o:	src/%.c
