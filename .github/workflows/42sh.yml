@@ -22,12 +22,14 @@ jobs:
             echo "We are in the EPITECH 42sh repository. Exiting."
             exit 1
           fi
+          echo "Everything's good. Launching."
 
   check_coding_style:
     name: Coding style checking job
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/epitech/coding-style-checker:latest
+    needs: check_epitech_repository
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
