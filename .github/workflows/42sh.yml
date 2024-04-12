@@ -15,6 +15,8 @@ jobs:
   check_coding_style:
     name: Coding style checking job
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/epitech/coding-style-checker:latest
     steps:
       - name: Are we in the EPITECH repository ?
         run: |
@@ -27,7 +29,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run coding style
-        run: coding-style $(pwd) $(pwd)
+        run: check.sh $(pwd) $(pwd)
       - name: Check coding style
         run: |
           while IFS= read -r line; do
@@ -38,14 +40,14 @@ jobs:
             echo "::error title=${error_name} coding style error,file=${file},line=${error_line}::${error_nbr}"
           done < "coding-style-reports.log"
           if [ "$(cat coding-style-reports.log | wc -l)" != 0 ]; then
-            rm -f coding-style-reports.log
             exit 1
           fi
-          rm -f coding-style-reports.log
 
   check_program_compilation:
     name: Program compilation checking job
     runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker
     needs: check_coding_style
     steps:
       - name: Repository checkout
@@ -63,11 +65,9 @@ jobs:
           for ex in "${executables[@]}"; do
             find . -type f -name "$ex" -executable -print -quit | grep -s "$ex"
             if [ "$?" -ne "0" ]; then
-              make fclean
               exit 1
             fi
           done
-          make fclean
 
   push_to_mirror:
     name: Mirroring job
