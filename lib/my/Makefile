@@ -61,6 +61,7 @@ SRC	=	clean_str.c \
 		my_tabdup.c \
 		parse_str.c \
 		print_word_array.c  \
+		sep_str.c	\
 		separate_words.c    \
 		separate_words_on_spaces.c  \
 		separate_words_on_str.c
