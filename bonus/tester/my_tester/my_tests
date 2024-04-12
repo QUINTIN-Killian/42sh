@@ -1,0 +1,23 @@
+ls
+ls -l
+cat -e ../../../main.c | grep main
+cat unknown_file.txt
+./../../my_segfault/my_segfault
+find ../../.. -name main.c -type f
+echo TEST > test.kikito ; cat test.kikito ; rm test.kikito | ls
+cd ~ ; ls | echo $PWD
+echo test1 ; echo test2; echo test3 ;echo test4
+cat ../../../main.c | grep ac | wc -l | wc -c
+env ; setenv TEST KIKITO ; env ; setenv ; unsetenv KIKITO ; unsetenv TEST
+exit 7 ; echo $?
+exit test
+exit 1test
+diff ../../../main.c ../../../caller.c
+rmdir unknown_directory
+cat ../../../main.c > test.txt ; cat test.txt >> test.txt ; cat test.txt >> test.txt ; rm test.txt ; ls
+echo test1 >> test.txt ; cat test.txt ; echo test2 >> test.txt ; cat test.txt ; echo test3 > test.txt ; cat test.txt ; rm test.txt ; ls
+
+qvdhDBJdbJDBJDJDB
+./../../bin_macos
+./../my_tester
+echo $? ; echo $PWD ; cd ~ ; echo $? ; echo $PWD ; cd - ; echo $PWD
