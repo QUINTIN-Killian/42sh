@@ -69,6 +69,7 @@ void free_word_array(char **word_array);
 char *concat_str(int nb_elt, ...);
 char *parse_str(char const *str, int ind_start, int ind_end);
 char **my_tabdup(char **tab);
+char **sep_str(char const *str, int nb_sep, ...);
 char **separate_words_on_str(char const *str, char const *sep);
 void my_fdputchar(int fd, char c);
 int my_fdputstr(int fd, char const *str);
