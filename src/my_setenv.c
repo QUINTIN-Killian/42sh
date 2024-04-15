@@ -40,7 +40,8 @@ static char *error_handling_setenv(shell_t *shell)
         return concat_2_str(shell->command_array[1], "=");
     if (my_strlen_array(shell->command_array) == 3 &&
     !error_handling_key_setenv(shell, shell->command_array[1]))
-        return concat_str(3, shell->command_array[1], "=", shell->command_array[2]);
+        return concat_str(3, shell->command_array[1], "=",
+        shell->command_array[2]);
     shell->last_return = 1;
     return NULL;
 }

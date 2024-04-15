@@ -60,7 +60,8 @@ int del_env(shell_t *shell, char *key)
 
 static int error_handling_env_aux(shell_t *shell, int ret, struct stat *st)
 {
-    if (ret != -1 && shell->command_array[1][my_strlen(shell->command_array[1]) - 1] == '/'){
+    if (ret != -1 && shell->command_array[1]
+    [my_strlen(shell->command_array[1]) - 1] == '/') {
         if (S_ISDIR(st->st_mode))
             mini_fdprintf(shell->pipefd[1], "’: Permission denied\n");
         else
@@ -77,7 +78,8 @@ static int error_handling_env(shell_t *shell)
 
     ret = stat(shell->command_array[1], &st);
     mini_fdprintf(shell->pipefd[1], "env: `%s", shell->command_array[1]);
-    if (shell->command_array[1][my_strlen(shell->command_array[1]) - 1] != '/') {
+    if (shell->command_array[1][my_strlen(shell->command_array[1]) - 1]
+    != '/') {
         mini_fdprintf(shell->pipefd[1], "’: No such file or directory\n");
         return 127;
     }

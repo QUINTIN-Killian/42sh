@@ -43,11 +43,13 @@ void double_right_redirection(shell_t *shell, int i)
     struct stat st;
 
     shell->last_return = 0;
-    if (shell->fd_input == -1 || shell->command_array == NULL || shell->command_array[0] == NULL)
+    if (shell->fd_input == -1 || shell->command_array == NULL ||
+    shell->command_array[0] == NULL)
         return;
     if (stat(shell->command_array[0], &st) == 0) {
         if (is_same_file(shell, shell->command_array[0], i))
-            return error_same_file(shell->command_array_sep, i, shell->command_array);
+            return error_same_file(shell->command_array_sep, i,
+            shell->command_array);
         redirection_fd = open(shell->command_array[0], O_WRONLY | O_APPEND);
     } else
         redirection_fd = open(shell->command_array[0], O_CREAT | O_WRONLY);
@@ -65,7 +67,8 @@ void simple_right_redirection(shell_t *shell)
     struct stat st;
 
     shell->last_return = 0;
-    if (shell->fd_input == -1 || shell->command_array == NULL || shell->command_array[0] == NULL)
+    if (shell->fd_input == -1 || shell->command_array == NULL ||
+    shell->command_array[0] == NULL)
         return;
     if (stat(shell->command_array[0], &st) == 0)
         redirection_fd = open(shell->command_array[0], O_WRONLY | O_TRUNC);
