@@ -29,8 +29,8 @@ int error_handling_exit(shell_t *shell)
         shell->exit = 1;
         return 0;
     } else {
-        if (my_strlen_array(shell->command_array) != 2 || shell->command_array[1][0] < '0' ||
-        shell->command_array[1][0] > '9') {
+        if (my_strlen_array(shell->command_array) != 2 ||
+        shell->command_array[1][0] < '0' || shell->command_array[1][0] > '9') {
             mini_fdprintf(shell->pipefd[1], "exit: Expression Syntax.\n");
             shell->last_return = 1;
             return 0;
