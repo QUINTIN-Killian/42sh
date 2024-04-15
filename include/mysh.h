@@ -9,6 +9,7 @@
 #ifndef MYSH_H_
     #define MYSH_H_
     #include "my.h"
+    #include <time.h>
     #include <sys/types.h>
     #include <sys/wait.h>
     #include <sys/stat.h>
@@ -20,6 +21,13 @@ typedef struct env_s {
     char *env;
     struct env_s *next;
 } env_t;
+
+typedef struct history_s {
+    int id;
+    char *ctime;
+    char *command;
+    struct history_s *next;
+} history_t;
 
 typedef struct shell_s {
     int exit;

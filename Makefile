@@ -22,7 +22,8 @@ SRC	=	src/caller.c	\
 		src/right_redirections.c	\
 		src/shell.c	\
 		src/exit.c	\
-		src/var_env.c
+		src/var_env.c	\
+		src/history.c
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 
