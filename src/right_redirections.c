@@ -8,23 +8,23 @@
 
 #include "../include/mysh.h"
 
-static bool is_same_file(shell_t *shell, char *filename, int ind)
+static int is_same_file(shell_t *shell, char *filename, int ind)
 {
     char **tmp;
     struct stat st;
 
     if (ind <= 0 || stat(filename, &st) == -1 || st.st_size == 0)
-        return false;
+        return 0;
     tmp = sep_str(shell->command_array_sep[ind - 1], 2, "\t", " ");
     for (int i = my_strlen_array(tmp) - 1; i >= 0; i--) {
         if (my_strcmp(tmp[i], filename) == 0) {
             free_word_array(tmp);
             shell->last_return = 1;
-            return true;
+            return 1;
         }
     }
     free_word_array(tmp);
-    return false;
+    return 0;
 }
 
 static void error_same_file(char **command_array_sep, int i, char **filename)

@@ -69,7 +69,7 @@ char **realloc_tab_plus_one(char **tab);
 void get_command_separators(shell_t *shell, char *command);
 
 //error_handling_command.c :
-bool error_handling_input(shell_t *shell);
+int error_handling_input(shell_t *shell);
 
 //right_redirections.c :
 void double_right_redirection(shell_t *shell, int i);

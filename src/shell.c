@@ -8,7 +8,7 @@
 
 #include "../include/mysh.h"
 
-static bool print_fd(shell_t *shell)
+static int print_fd(shell_t *shell)
 {
     char buf;
 
@@ -19,10 +19,10 @@ static bool print_fd(shell_t *shell)
         }
         close(shell->pipefd[0]);
     }
-    return true;
+    return 1;
 }
 
-static bool parse_multiple_commands_aux(shell_t *shell)
+static int parse_multiple_commands_aux(shell_t *shell)
 {
     shell->fd_input = -1;
     shell->ind = -1;
@@ -31,7 +31,7 @@ static bool parse_multiple_commands_aux(shell_t *shell)
         sep_str(shell->command_array_sep[i], 2, "\t", " ");
         if (explore_var_env(shell)) {
             free_word_array(shell->command_array);
-            return false;
+            return 0;
         }
         pipe(shell->pipefd);
         command_interpreter(shell, i);
