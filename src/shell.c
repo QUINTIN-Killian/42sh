@@ -35,7 +35,8 @@ static bool parse_multiple_commands_aux(shell_t *shell)
         }
         pipe(shell->pipefd);
         command_interpreter(shell, i);
-        close(shell->fd_input);
+        if (shell->fd_input != -1)
+            close(shell->fd_input);
         shell->fd_input = shell->pipefd[0];
         close(shell->pipefd[1]);
         free_word_array(shell->command_array);
