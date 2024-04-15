@@ -39,6 +39,9 @@ typedef struct shell_s {
 //my_scanf.c :
 char *my_scanf(void);
 
+//exit.c :
+int error_handling_exit(shell_t *shell);
+
 //my_env.c :
 env_t *add_env(char *env);
 int my_env(shell_t *shell);
