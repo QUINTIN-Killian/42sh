@@ -24,20 +24,6 @@ static char **create_separator_tab(va_list args, int nb_sep)
     return sep;
 }
 
-char **insert_elt_in_tab(char **tab, char *elt)
-{
-    char **tmp = my_tabdup(tab);
-
-    free_word_array(tab);
-    tab = malloc(sizeof(char *) * (my_strlen_array(tmp) + 2));
-    for (int i = 0; i < my_strlen_array(tmp); i++)
-        tab[i] = my_strdup(tmp[i]);
-    tab[my_strlen_array(tmp)] = my_strdup(elt);
-    tab[my_strlen_array(tmp) + 1] = NULL;
-    free_word_array(tmp);
-    return tab;
-}
-
 static int is_sep2(char const *str, char **sep, int ind, int i)
 {
     for (int j = ind; j < ind + my_strlen(sep[i]); j++)
@@ -107,7 +93,7 @@ char **create_separated_tab(char const *str, char **sep, int ind_start)
     char *tmp = get_separated_word(str, sep, &ind_start);
 
     while (tmp != NULL) {
-        tab = insert_elt_in_tab(tab, tmp);
+        tab = insert_elt_in_tab_plus_one(tab, tmp);
         free(tmp);
         tmp = get_separated_word(str, sep, &ind_start);
     }
