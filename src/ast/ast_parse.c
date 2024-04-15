@@ -11,6 +11,25 @@
 #include <stdlib.h>
 #include <string.h>
 
+static char *clear_str(char *str)
+{
+    int i = 0;
+    char *temp;
+    int len = my_strlen(str);
+    int c = len - 1;
+
+    for (; str[i] == ' '; i++);
+    for (; str[c] == ' '; c--);
+    c -= i - 1;
+    temp = malloc(sizeof(char) * c);
+    for (int j = 0; j < c; j++){
+        temp[j] = str[i];
+        i++;
+        temp[j + 1] = '\0';
+    }
+    return temp;
+}
+
 static int pat_to_enum(char *pat)
 {
     if (my_strcmp(pat, ">") == 0)
@@ -25,7 +44,7 @@ static int pat_to_enum(char *pat)
         return DOUBLE_RIGHT;
     if (my_strcmp(pat, "<<") == 0)
         return DOUBLE_LEFT;
-    return NULL;
+    return 0;
 }
 
 void ast_parse(ast_node *node, char *pat)
@@ -33,11 +52,11 @@ void ast_parse(ast_node *node, char *pat)
     for (int i = 0; node->value[i] != '\0'; i++) {
         if (node->type != COMMAND)
             break;
-        if (my_strncmp(&(node->value[i]), pat, my_strlen(pat)) == 0) {
+        if (my_strncmp(&node->value[i], pat, my_strlen(pat)) == 0) {
             node->left = create_ast_node(COMMAND,
                 my_strndup(node->value, i));
             node->right = create_ast_node(COMMAND,
-                my_strdup(&node->value[i + 1]));
+                my_strdup(clear_str(&node->value[i + my_strlen(pat)])));
             node->type = pat_to_enum(pat);
         }
     }

@@ -72,9 +72,9 @@ ast_node *build_ast(char *input)
 
     ast_parse(root, ";");
     ast_parse(root, "|");
-    ast_parse(root, ">");
-    ast_parse(root, "<");
     ast_parse(root, ">>");
     ast_parse(root, "<<");
+    ast_parse(root, ">");
+    ast_parse(root, "<");
     return root;
 }

@@ -150,7 +150,9 @@ int shell_interface(shell_t *shell)
             free(input);
             continue;
         }
-        parse_multiple_commands(input, shell);
+        shell->ast = build_ast(input);
+        execute_ast_node(shell->ast, shell);
+        free_ast_node(shell->ast);
         free(input);
     }
     return 0;

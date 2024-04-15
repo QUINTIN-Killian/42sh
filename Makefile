@@ -22,8 +22,10 @@ SRC	=	src/caller.c	\
 		src/right_redirections.c	\
 		src/shell.c	\
 		src/ast/ast.c	\
-		src/ast/parse.c	\
+		src/ast/ast_parse.c	\
 		src/ast/ast_execute.c	\
+		src/ast/exec_util.c	\
+		src/ast/operator_executor.c	\
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 
@@ -43,6 +45,7 @@ $(EXEC):	$(LIB_NAME) $(OBJ)
 
 bin/%.o:	src/%.c
 	@mkdir -p bin
+	@mkdir -p bin/ast
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 clean:

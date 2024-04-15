@@ -16,10 +16,36 @@
     #include <errno.h>
     #include <dirent.h>
 
+    #define BUILTIN_ERROR (-1)
+    #define BUILTIN_FINE (-2)
+    #define BUILTIN_NO_F (-3)
+
 typedef struct env_s {
     char *env;
     struct env_s *next;
 } env_t;
+
+typedef enum {
+    COMMAND,
+    PIPE,
+    SEMICOLON,
+    REDIRECTION_RIGTH,
+    REDIRECTION_LEFT,
+    DOUBLE_LEFT,
+    DOUBLE_RIGHT
+} TokenType;
+
+typedef struct {
+    TokenType type;
+    char *value;
+} Token;
+
+typedef struct ast_node {
+    TokenType type;
+    char *value;
+    struct ast_node *left;
+    struct ast_node *right;
+} ast_node;
 
 typedef struct shell_s {
     int exit;
@@ -31,6 +57,7 @@ typedef struct shell_s {
     int ind;
     int pipefd[2];
     int fd_input;
+    ast_node *ast;
 } shell_t;
 
 //main.c :
@@ -85,28 +112,7 @@ int my_unsetenv(char **command_array, shell_t *shell);
 //caller.c :
 void call_bin(char **command_array, shell_t *shell);
 
-// ast
-typedef enum {
-    COMMAND,
-    PIPE,
-    SEMICOLON,
-    REDIRECTION_RIGTH,
-    REDIRECTION_LEFT,
-    DOUBLE_LEFT,
-    DOUBLE_RIGHT
-} TokenType;
-
-typedef struct {
-    TokenType type;
-    char *value;
-} Token;
-
-typedef struct ast_node {
-    TokenType type;
-    char *value;
-    struct ast_node *left;
-    struct ast_node *right;
-} ast_node;
+//ast
 
 void ast_parse_semicolon(ast_node *node);
 void ast_parse_pipe(ast_node *node);
@@ -117,6 +123,16 @@ void ast_parse(ast_node *node, char *pat);
 ast_node *create_ast_node(TokenType type, char *value);
 void free_ast_node(ast_node *node);
 ast_node *build_ast(char *input);
-int execute_ast_node(ast_node *node, char ***env);
+int execute_ast_node(ast_node *node, shell_t *shell);
+
+void my_execve(char *path, char **args, shell_t *shell);
+int print_execve_error(char *command, char *error);
+
+//executor
+int execute_normal(ast_node *node, shell_t *shell);
+int execute_redirect(ast_node *node, shell_t *shell);
+int execute_input(ast_node *node, shell_t *shell);
+int execute_append(ast_node *node, shell_t *shell);
+int execute_input_here(ast_node *node, shell_t *shell);
 
 #endif
