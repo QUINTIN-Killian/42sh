@@ -85,4 +85,35 @@ int my_unsetenv(char **command_array, shell_t *shell);
 //caller.c :
 void call_bin(char **command_array, shell_t *shell);
 
+// ast
+typedef enum {
+    COMMAND,
+    PIPE,
+    SEMICOLON,
+    REDIRECTION_RIGTH,
+    REDIRECTION_LEFT
+} TokenType;
+
+typedef struct {
+    TokenType type;
+    char *value;
+} Token;
+
+typedef struct ast_node {
+    TokenType type;
+    char *value;
+    struct ast_node *left;
+    struct ast_node *right;
+} ast_node;
+
+void ast_parse_semicolon(ast_node *node);
+void ast_parse_pipe(ast_node *node);
+void ast_parse_redirection_rigth(ast_node *node);
+void ast_parse_redirection_left(ast_node *node);
+
+ast_node *create_ast_node(TokenType type, char *value);
+void free_ast_node(ast_node *node);
+ast_node *build_ast(char *input);
+int execute_ast_node(ast_node *node, char ***env);
+
 #endif
