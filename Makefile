@@ -21,7 +21,8 @@ SRC	=	src/caller.c	\
 		src/my_unsetenv.c \
 		src/right_redirections.c	\
 		src/shell.c	\
-		src/exit.c
+		src/exit.c	\
+		src/var_env.c
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 
