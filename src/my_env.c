@@ -58,10 +58,10 @@ int del_env(shell_t *shell, char *key)
     return 1;
 }
 
-static int error_handling_env_aux(shell_t *shell, char **command_array,
-    int ret, struct stat *st)
+static int error_handling_env_aux(shell_t *shell, int ret, struct stat *st)
 {
-    if (ret != -1 && command_array[1][my_strlen(command_array[1]) - 1] == '/'){
+    if (ret != -1 && shell->command_array[1]
+    [my_strlen(shell->command_array[1]) - 1] == '/') {
         if (S_ISDIR(st->st_mode))
             mini_fdprintf(shell->pipefd[1], "’: Permission denied\n");
         else
@@ -71,14 +71,15 @@ static int error_handling_env_aux(shell_t *shell, char **command_array,
     return -1;
 }
 
-static int error_handling_env(shell_t *shell, char **command_array)
+static int error_handling_env(shell_t *shell)
 {
     struct stat st;
     int ret;
 
-    ret = stat(command_array[1], &st);
-    mini_fdprintf(shell->pipefd[1], "env: `%s", command_array[1]);
-    if (command_array[1][my_strlen(command_array[1]) - 1] != '/') {
+    ret = stat(shell->command_array[1], &st);
+    mini_fdprintf(shell->pipefd[1], "env: `%s", shell->command_array[1]);
+    if (shell->command_array[1][my_strlen(shell->command_array[1]) - 1]
+    != '/') {
         mini_fdprintf(shell->pipefd[1], "’: No such file or directory\n");
         return 127;
     }
@@ -89,15 +90,15 @@ static int error_handling_env(shell_t *shell, char **command_array)
         else
             return 127;
     }
-    return error_handling_env_aux(shell, command_array, ret, &st);
+    return error_handling_env_aux(shell, ret, &st);
 }
 
-int my_env(char **command_array, shell_t *shell)
+int my_env(shell_t *shell)
 {
     env_t *node;
 
-    if (my_strlen_array(command_array) != 1) {
-        shell->last_return = error_handling_env(shell, command_array);
+    if (my_strlen_array(shell->command_array) != 1) {
+        shell->last_return = error_handling_env(shell);
         return 1;
     }
     node = shell->head;

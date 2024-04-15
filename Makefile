@@ -10,7 +10,7 @@ CC	=	gcc
 
 SRC	=	src/caller.c	\
 		src/command_separators.c	\
-		src/error_handling_command.c	\
+		src/error_handling_input.c	\
 		src/functions.c	\
 		src/interpreter.c	\
 		src/main.c	\
@@ -20,7 +20,9 @@ SRC	=	src/caller.c	\
 		src/my_setenv.c	\
 		src/my_unsetenv.c \
 		src/right_redirections.c	\
-		src/shell.c
+		src/shell.c	\
+		src/exit.c	\
+		src/var_env.c
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 
