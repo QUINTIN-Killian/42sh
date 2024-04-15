@@ -13,7 +13,7 @@ static bool space_checker(char **tmp)
     char **checker;
 
     for (int i = 0; i < my_strlen_array(tmp); i++) {
-        checker = separate_words_on_spaces(tmp[i]);
+        checker = sep_str(tmp[i], 2, "\t", " ");
         if (checker == NULL || checker[0] == NULL) {
             free_word_array(checker);
             return true;
@@ -45,7 +45,7 @@ static bool print_error(char **tmp, char **sep, int i, int occ)
 
 static bool pipe_error(char *command)
 {
-    char **tmp = separate_words(command, "|");
+    char **tmp = sep_str(command, 1, "|");
     int occ = count_occ_motif(command, "|");
 
     if (space_checker(tmp) || occ >= my_strlen_array(tmp)) {
@@ -63,7 +63,7 @@ static bool analyse_command(char *command, char **sep)
     char **tmp;
 
     for (int i = 0; i < 4; i++) {
-        tmp = separate_words_on_str(command, sep[i]);
+        tmp = sep_str(command, 1, sep[i]);
         occ = count_occ_motif(command, sep[i]);
         if (my_strcmp(sep[i], ">") == 0)
             occ = occ - (count_occ_motif(command, ">>") * 2);
@@ -78,7 +78,7 @@ static bool analyse_command(char *command, char **sep)
 
 bool error_handling_command(shell_t *shell, char *input)
 {
-    char **commands = separate_words(input, ";");
+    char **commands = sep_str(input, 1, ";");
     char **sep = malloc(sizeof(char *) * 5);
 
     sep[0] = my_strdup(">");

@@ -99,7 +99,7 @@ static bool parse_multiple_commands_aux(shell_t *shell,
     shell->fd_input = -1;
     shell->ind = -1;
     for (int i = 0; i < my_strlen_array(command_array_sep); i++) {
-        command_array = separate_words_on_spaces(command_array_sep[i]);
+        command_array = sep_str(command_array_sep[i], 2, "\t", " ");
         if (explore_var_env(command_array, shell)) {
             free_word_array(command_array);
             return false;
@@ -117,12 +117,12 @@ static bool parse_multiple_commands_aux(shell_t *shell,
 static void parse_multiple_commands(char *input, shell_t *shell)
 {
     char **command_array_sep;
-    char **multiple_commands = separate_words(input, ";");
+    char **multiple_commands = sep_str(input, 1, ";");
 
     for (int i = 0; i < my_strlen_array(multiple_commands); i++) {
         shell->separators = NULL;
         get_command_separators(shell, multiple_commands[i]);
-        command_array_sep = separate_words(multiple_commands[i], "|<>");
+        command_array_sep = sep_str(multiple_commands[i], 3, "|", "<", ">");
         if (command_array_sep == NULL || command_array_sep[0] == NULL) {
             free_word_array(command_array_sep);
             continue;
