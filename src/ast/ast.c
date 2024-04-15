@@ -70,9 +70,11 @@ ast_node *build_ast(char *input)
 {
     ast_node *root = create_ast_node(COMMAND, input);
 
-    ast_parse_semicolon(root);
-    ast_parse_pipe(root);
-    ast_parse_redirection_rigth(root);
-    ast_parse_redirection_left(root);
+    ast_parse(root, ";");
+    ast_parse(root, "|");
+    ast_parse(root, ">");
+    ast_parse(root, "<");
+    ast_parse(root, ">>");
+    ast_parse(root, "<<");
     return root;
 }

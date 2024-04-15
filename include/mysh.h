@@ -91,7 +91,9 @@ typedef enum {
     PIPE,
     SEMICOLON,
     REDIRECTION_RIGTH,
-    REDIRECTION_LEFT
+    REDIRECTION_LEFT,
+    DOUBLE_LEFT,
+    DOUBLE_RIGHT
 } TokenType;
 
 typedef struct {
@@ -110,6 +112,7 @@ void ast_parse_semicolon(ast_node *node);
 void ast_parse_pipe(ast_node *node);
 void ast_parse_redirection_rigth(ast_node *node);
 void ast_parse_redirection_left(ast_node *node);
+void ast_parse(ast_node *node, char *pat);
 
 ast_node *create_ast_node(TokenType type, char *value);
 void free_ast_node(ast_node *node);

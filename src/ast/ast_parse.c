@@ -11,78 +11,38 @@
 #include <stdlib.h>
 #include <string.h>
 
-void ast_parse_semicolon(ast_node *node)
+static int pat_to_enum(char *pat)
 {
-    for (int i = 0; node->value[i] != '\0'; i++) {
-        if (node->type != COMMAND)
-            break;
-        if (node->value[i] == ';') {
-            node->left = create_ast_node(COMMAND,
-                my_strndup(node->value, i));
-            node->right = create_ast_node(COMMAND,
-                my_strdup(&node->value[i + 1]));
-            node->type = SEMICOLON;
-        }
-    }
-    if (node->left != NULL)
-        ast_parse_semicolon(node->left);
-    if (node->right != NULL)
-        ast_parse_semicolon(node->right);
+    if (my_strcmp(pat, ">") == 0)
+        return REDIRECTION_RIGTH;
+    if (my_strcmp(pat, "<") == 0)
+        return REDIRECTION_LEFT;
+    if (my_strcmp(pat, "|") == 0)
+        return PIPE;
+    if (my_strcmp(pat, ";") == 0)
+        return SEMICOLON;
+    if (my_strcmp(pat, ">>") == 0)
+        return DOUBLE_RIGHT;
+    if (my_strcmp(pat, "<<") == 0)
+        return DOUBLE_LEFT;
+    return NULL;
 }
 
-void ast_parse_pipe(ast_node *node)
+void ast_parse(ast_node *node, char *pat)
 {
     for (int i = 0; node->value[i] != '\0'; i++) {
         if (node->type != COMMAND)
             break;
-        if (node->value[i] == '|') {
+        if (my_strncmp(&(node->value[i]), pat, my_strlen(pat)) == 0) {
             node->left = create_ast_node(COMMAND,
                 my_strndup(node->value, i));
             node->right = create_ast_node(COMMAND,
                 my_strdup(&node->value[i + 1]));
-            node->type = PIPE;
+            node->type = pat_to_enum(pat);
         }
     }
     if (node->left != NULL)
-        ast_parse_pipe(node->left);
+        ast_parse(node->left, pat);
     if (node->right != NULL)
-        ast_parse_pipe(node->right);
-}
-
-void ast_parse_redirection_rigth(ast_node *node)
-{
-    for (int i = 0; node->value[i] != '\0'; i++) {
-        if (node->type != COMMAND)
-            break;
-        if (node->value[i] == '>') {
-            node->left = create_ast_node(COMMAND,
-                my_strndup(node->value, i));
-            node->right = create_ast_node(COMMAND,
-                my_strdup(&node->value[i + 1]));
-            node->type = REDIRECTION_RIGTH;
-        }
-    }
-    if (node->left != NULL)
-        ast_parse_redirection_rigth(node->left);
-    if (node->right != NULL)
-        ast_parse_redirection_rigth(node->right);
-}
-
-void ast_parse_redirection_left(ast_node *node)
-{
-    for (int i = 0; node->value[i] != '\0'; i++) {
-        if (node->type != COMMAND)
-            break;
-        if (node->value[i] == '<') {
-            node->left = create_ast_node(COMMAND,
-                my_strndup(node->value, i));
-            node->right = create_ast_node(COMMAND,
-                my_strdup(&node->value[i + 1]));
-            node->type = REDIRECTION_LEFT;
-        }
-    }
-    if (node->left != NULL)
-        ast_parse_redirection_left(node->left);
-    if (node->right != NULL)
-        ast_parse_redirection_left(node->right);
+        ast_parse(node->right, pat);
 }
