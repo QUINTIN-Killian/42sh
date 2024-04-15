@@ -8,13 +8,13 @@
 
 #include "../include/mysh.h"
 
-static int error_handling_cd(shell_t *shell, char **command_array)
+static int error_handling_cd(shell_t *shell)
 {
-    if (my_strlen_array(command_array) == 2 &&
-    (my_strcmp(command_array[1], "-") == 0 ||
-    my_strcmp(command_array[1], "~") == 0))
+    if (my_strlen_array(shell->command_array) == 2 &&
+    (my_strcmp(shell->command_array[1], "-") == 0 ||
+    my_strcmp(shell->command_array[1], "~") == 0))
         return 0;
-    if (my_strlen_array(command_array) > 2) {
+    if (my_strlen_array(shell->command_array) > 2) {
         mini_fdprintf(shell->pipefd[1], "cd: Too many arguments.\n");
         return 1;
     }
@@ -66,35 +66,34 @@ int cd_minus(shell_t *shell)
     return cd_home_and_minus(shell, tmp, old_pwd);
 }
 
-static void my_cd_error(char **command_array, shell_t *shell)
+static void my_cd_error(shell_t *shell)
 {
     mini_fdprintf(shell->pipefd[1],
-    "%s: %s.\n", command_array[1], strerror(errno));
+    "%s: %s.\n", shell->command_array[1], strerror(errno));
     shell->last_return = 1;
 }
 
-static int my_cd_aux(char **command_array, shell_t *shell)
+static int my_cd_aux(shell_t *shell)
 {
-    if (error_handling_cd(shell, command_array)) {
+    if (error_handling_cd(shell)) {
         shell->last_return = 1;
         return 1;
     }
-    if (my_strlen_array(command_array) == 1 ||
-    my_strcmp(command_array[1], "~") == 0)
+    if (my_strlen_array(shell->command_array) == 1 ||
+    my_strcmp(shell->command_array[1], "~") == 0)
         return cd_home(shell);
-    if (my_strcmp(command_array[1], "-") == 0)
+    if (my_strcmp(shell->command_array[1], "-") == 0)
         return cd_minus(shell);
     return -2;
 }
 
-static int cd_switch_env(char **command_array, shell_t *shell,
-    int ans, char *old_pwd)
+static int cd_switch_env(shell_t *shell, int ans, char *old_pwd)
 {
     char *buffer_new = NULL;
     char *new_pwd;
 
     if (ans != 0) {
-        my_cd_error(command_array, shell);
+        my_cd_error(shell);
         free(old_pwd);
     } else {
         buffer_new = getcwd(NULL, 0);
@@ -107,18 +106,18 @@ static int cd_switch_env(char **command_array, shell_t *shell,
     return 0;
 }
 
-int my_cd(char **command_array, shell_t *shell)
+int my_cd(shell_t *shell)
 {
     int ans;
     char *buffer_old = NULL;
     char *old_pwd;
 
-    if (my_cd_aux(command_array, shell) != -2)
+    if (my_cd_aux(shell) != -2)
         return 0;
     buffer_old = getcwd(NULL, 0);
     old_pwd = concat_2_str("OLDPWD=", buffer_old);
     free(buffer_old);
-    ans = chdir(command_array[1]);
-    cd_switch_env(command_array, shell, ans, old_pwd);
+    ans = chdir(shell->command_array[1]);
+    cd_switch_env(shell, ans, old_pwd);
     return ans;
 }

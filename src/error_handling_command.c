@@ -76,9 +76,9 @@ static bool analyse_command(char *command, char **sep)
     return !pipe_error(command);
 }
 
-bool error_handling_command(shell_t *shell, char *input)
+bool error_handling_command(shell_t *shell)
 {
-    char **commands = sep_str(input, 1, ";");
+    char **commands = sep_str(shell->input, 1, ";");
     char **sep = malloc(sizeof(char *) * 5);
 
     sep[0] = my_strdup(">");

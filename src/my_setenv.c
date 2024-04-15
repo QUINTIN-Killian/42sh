@@ -27,20 +27,20 @@ static int error_handling_key_setenv(shell_t *shell, char *key)
     return 0;
 }
 
-static char *error_handling_setenv(char **command_array, shell_t *shell)
+static char *error_handling_setenv(shell_t *shell)
 {
-    if (my_strlen_array(command_array) == 1) {
-        free(command_array[0]);
-        command_array[0] = my_strdup("env");
-        my_env(command_array, shell);
+    if (my_strlen_array(shell->command_array) == 1) {
+        free(shell->command_array[0]);
+        shell->command_array[0] = my_strdup("env");
+        my_env(shell);
         return NULL;
     }
-    if (my_strlen_array(command_array) == 2 &&
-    !error_handling_key_setenv(shell, command_array[1]))
-        return concat_2_str(command_array[1], "=");
-    if (my_strlen_array(command_array) == 3 &&
-    !error_handling_key_setenv(shell, command_array[1]))
-        return concat_str(3, command_array[1], "=", command_array[2]);
+    if (my_strlen_array(shell->command_array) == 2 &&
+    !error_handling_key_setenv(shell, shell->command_array[1]))
+        return concat_2_str(shell->command_array[1], "=");
+    if (my_strlen_array(shell->command_array) == 3 &&
+    !error_handling_key_setenv(shell, shell->command_array[1]))
+        return concat_str(3, shell->command_array[1], "=", shell->command_array[2]);
     shell->last_return = 1;
     return NULL;
 }
@@ -58,14 +58,14 @@ env_t *is_existing_env(shell_t *shell, char *key)
     return NULL;
 }
 
-int my_setenv(char **command_array, shell_t *shell)
+int my_setenv(shell_t *shell)
 {
     env_t *node;
-    char *env = error_handling_setenv(command_array, shell);
+    char *env = error_handling_setenv(shell);
 
     if (env == NULL)
         return 1;
-    node = is_existing_env(shell, command_array[1]);
+    node = is_existing_env(shell, shell->command_array[1]);
     if (node == NULL) {
         node = add_env(env);
         node->next = shell->head;
