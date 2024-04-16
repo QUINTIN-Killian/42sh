@@ -18,6 +18,8 @@ int execute_normal(ast_node *node, shell_t *shell)
     int pid = fork();
     char **args = sep_str(node->value, 2, " ", "\t");
 
+    // if (is_builtin(args, shell) == 1)
+    //     return(0);
     if (pid == BUILTIN_ERROR)
         return BUILTIN_ERROR;
     if (pid == 0) {

@@ -135,4 +135,5 @@ int execute_input(ast_node *node, shell_t *shell);
 int execute_append(ast_node *node, shell_t *shell);
 int execute_input_here(ast_node *node, shell_t *shell);
 
+int is_builtin(char **args, shell_t *shell);
 #endif
