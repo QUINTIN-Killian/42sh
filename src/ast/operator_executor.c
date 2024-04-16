@@ -13,19 +13,36 @@
 #include "../../include/mysh.h"
 #include "../../include/my.h"
 
+static void print_res(pid_t child, char *program_name, shell_t *shell)
+{
+    int status;
+
+    waitpid(child, &status, 0);
+    if (WIFSIGNALED(status)) {
+        status = WTERMSIG(status);
+        mini_fdprintf(0, "%s\n", strsignal(status));
+        if (WCOREDUMP(status))
+            shell->last_return = 128 + status;
+        else
+            shell->last_return = 1;
+    }
+}
+
 int execute_normal(ast_node *node, shell_t *shell)
 {
-    int pid = fork();
+    int pid;
     char **args = sep_str(node->value, 2, " ", "\t");
 
-    // if (is_builtin(args, shell) == 1)
-    //     return(0);
-    if (pid == BUILTIN_ERROR)
-        return BUILTIN_ERROR;
-    if (pid == 0) {
-        my_execve(args[0], args, shell);
-        exit(0);
+    if (is_builtin(args, shell) == 1){
+        free_word_array(args);
+        return(0);
     }
+    pid = fork();
+    if (pid == 0){
+        if (execvp(args[0], args) == -1)
+            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+    } else
+        print_res(pid, args[0], shell);
     free_word_array(args);
     return pid;
 }
@@ -38,15 +55,19 @@ int execute_redirect(ast_node *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n");
+    if (is_builtin(args, shell) == 1){
+        free_word_array(args);
+        return(0);
+    }
     pid = fork();
-    if (pid == BUILTIN_ERROR)
-        return BUILTIN_ERROR;
-    if (pid == 0) {
+    if (pid == 0){
         dup2(fd, 1);
         close(fd);
-        my_execve(args[0], args, shell);
-        exit(0);
-    }
+        if (execvp(args[0], args) == -1)
+            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+    } else
+        print_res(pid, args[0], shell);
+    free_word_array(args);
     return pid;
 }
 
@@ -58,15 +79,19 @@ int execute_append(ast_node *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n");
+    if (is_builtin(args, shell) == 1){
+        free_word_array(args);
+        return(0);
+    }
     pid = fork();
-    if (pid == BUILTIN_ERROR)
-        return BUILTIN_ERROR;
-    if (pid == 0) {
+    if (pid == 0){
         dup2(fd, 1);
         close(fd);
-        my_execve(args[0], args, shell);
-        exit(0);
-    }
+        if (execvp(args[0], args) == -1)
+            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+    } else
+        print_res(pid, args[0], shell);
+    free_word_array(args);
     return pid;
 }
 
@@ -78,15 +103,19 @@ int execute_input(ast_node *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "No such file or directory.\n");
+    if (is_builtin(args, shell) == 1){
+        free_word_array(args);
+        return(0);
+    }
     pid = fork();
-    if (pid == BUILTIN_ERROR)
-        return BUILTIN_ERROR;
-    if (pid == 0) {
+    if (pid == 0){
         dup2(fd, 0);
         close(fd);
-        my_execve(args[0], args, shell);
-        exit(0);
-    }
+        if (execvp(args[0], args) == -1)
+            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+    } else
+        print_res(pid, args[0], shell);
+    free_word_array(args);
     return pid;
 }
 
@@ -99,10 +128,21 @@ static void input_here_loop(int fd[2], char *filename)
         my_putstr("? ");
         if (getline(&line, &len, stdin) == -1)
             break;
-        if (my_strcmp(line, filename) == 0)
+        if (my_strncmp(line, filename, my_strlen(filename) - 1) == 0)
             break;
         write(fd[1], line, my_strlen(line));
     }
+}
+
+static int must_exec(char **args, shell_t *shell, int *fd)
+{
+    if (pipe(fd) == -1)
+        return BUILTIN_ERROR;
+    if (is_builtin(args, shell) == 1){
+        free_word_array(args);
+        return(0);
+    }
+    return (1);
 }
 
 int execute_input_here(ast_node *node, shell_t *shell)
@@ -110,18 +150,20 @@ int execute_input_here(ast_node *node, shell_t *shell)
     char **args = sep_str(node->left->value, 2, " ", "\t");
     int fd[2];
     int pid;
+    int res;
 
-    if (pipe(fd) == -1)
-        return BUILTIN_ERROR;
+    res = must_exec(args, shell, fd);
+    if (res != 1)
+        return res;
     pid = fork();
-    if (pid == BUILTIN_ERROR)
-        return BUILTIN_ERROR;
-    if (pid == 0) {
+    if (pid == 0){
         close(fd[0]);
         input_here_loop(fd, node->right->value);
         close(fd[1]);
-        my_execve(args[0], args, shell);
-        exit(0);
-    }
+        if (execvp(args[0], args) == -1)
+            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+    } else
+        print_res(pid, args[0], shell);
+    free_word_array(args);
     return pid;
 }
