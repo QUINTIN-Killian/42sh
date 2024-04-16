@@ -21,7 +21,7 @@ static char *clear_str(char *str)
     for (; str[i] == ' '; i++);
     for (; str[c] == ' '; c--);
     c -= i - 1;
-    temp = malloc(sizeof(char) * c);
+    temp = malloc(sizeof(char) * (c + 1));
     for (int j = 0; j < c; j++){
         temp[j] = str[i];
         i++;

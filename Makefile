@@ -12,7 +12,6 @@ SRC	=	src/caller.c	\
 		src/command_separators.c	\
 		src/error_handling_command.c	\
 		src/functions.c	\
-		src/interpreter.c	\
 		src/main.c	\
 		src/my_cd.c	\
 		src/my_env.c	\
@@ -26,6 +25,7 @@ SRC	=	src/caller.c	\
 		src/ast/ast_execute.c	\
 		src/ast/exec_util.c	\
 		src/ast/operator_executor.c	\
+		src/ast/operator_executor2.c	\
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 

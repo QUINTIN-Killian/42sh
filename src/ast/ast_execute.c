@@ -34,47 +34,23 @@ static int execute_ast_semicolon(ast_node *node, shell_t *shell)
     return rv;
 }
 
-// static int execute_ast_pipe(ast_node *node, char ***env)
-// {
-//     int rv = 0;
-//     int fdtmp = dup(0);
-//     int pipefd[2];
-
-//     pipe(pipefd);
-//     if (node->left != NULL)
-//         rv = do_command_pipe(node->left->value, env, pipefd);
-//     close(pipefd[1]);
-//     dup2(pipefd[0], STDIN_FILENO);
-//     close(pipefd[0]);
-//     if (node->right != NULL)
-//         rv = execute_ast_node(node->right, env);
-//     dup2(fdtmp, 0);
-//     close(fdtmp);
-//     return rv;
-// }
-
-int my_exit(char **command_array, shell_t *shell)
+static int execute_ast_pipe(ast_node *node, shell_t *shell)
 {
-    if (my_strlen_array(command_array) == 1) {
-        shell->last_return = 0;
-        shell->exit = 1;
-        return 0;
-    } else {
-        if (my_strlen_array(command_array) != 2 || command_array[1][0] < '0' ||
-        command_array[1][0] > '9') {
-            mini_fdprintf(shell->pipefd[1], "exit: Expression Syntax.\n");
-            shell->last_return = 1;
-            return 0;
-        }
-        if (!my_str_isnum(command_array[1])) {
-            mini_fdprintf(shell->pipefd[1], "exit: Badly formed number.\n");
-            shell->last_return = 1;
-            return 0;
-        }
+    int rv = 0;
+    int fdtmp = dup(0);
+
+    pipe(shell->pipefd);
+    if (node->left != NULL){
+        rv = execute_pipe(node->left, shell);
     }
-    shell->last_return = convert_str_in_int(command_array[1]);
-    shell->exit = 1;
-    return 0;
+    close(shell->pipefd[1]);
+    dup2(shell->pipefd[0], STDIN_FILENO);
+    close(shell->pipefd[0]);
+    if (node->right != NULL)
+        rv = execute_ast_node(node->right, shell);
+    dup2(fdtmp, 0);
+    close(fdtmp);
+    return rv;
 }
 
 int is_builtin(char **args, shell_t *shell)
@@ -105,8 +81,8 @@ int is_builtin(char **args, shell_t *shell)
 int execute_ast_node(ast_node *node, shell_t *shell)
 {
     switch (node->type) {
-        // case PIPE:
-        //     return execute_ast_pipe(node, env);
+        case PIPE:
+            return execute_ast_pipe(node, shell);
         case SEMICOLON:
             return execute_ast_semicolon(node, shell);
         case COMMAND:

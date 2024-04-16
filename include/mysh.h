@@ -100,7 +100,7 @@ void double_right_redirection(shell_t *shell, char **command_array_sep, int i,
 void simple_right_redirection(shell_t *shell, char **filename);
 
 //shell.c :
-int error_handling_exit(char **command_array, shell_t *shell);
+int my_exit(char **command_array, shell_t *shell);
 int shell_interface(shell_t *shell);
 
 //my_setenv.c :
@@ -134,6 +134,7 @@ int execute_redirect(ast_node *node, shell_t *shell);
 int execute_input(ast_node *node, shell_t *shell);
 int execute_append(ast_node *node, shell_t *shell);
 int execute_input_here(ast_node *node, shell_t *shell);
+int execute_pipe(ast_node *node, shell_t *shell);
 
 int is_builtin(char **args, shell_t *shell);
 #endif
