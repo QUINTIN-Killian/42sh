@@ -64,5 +64,9 @@ void command_interpreter(shell_t *shell, int i)
         my_unsetenv(shell);
         return;
     }
+    if (my_strcmp(shell->command_array[0], "history") == 0) {
+        history(shell);
+        return;
+    }
     separator_interpreter1(shell, i);
 }

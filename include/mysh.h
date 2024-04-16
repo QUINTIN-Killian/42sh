@@ -34,6 +34,7 @@ typedef struct shell_s {
     int ac;
     char **av;
     env_t *head;
+    history_t *history;
     int last_return;
     char **separators;
     int ind;
@@ -49,6 +50,13 @@ char *my_scanf(void);
 
 //exit.c :
 int error_handling_exit(shell_t *shell);
+
+//history.c :
+history_t *get_history(history_t **history);
+void print_history(int fd, history_t **history);
+void destroy_history(history_t **history);
+void add_history(history_t **history, char *command);
+int history(shell_t *shell);
 
 //var_env.c
 int explore_var_env(shell_t *shell);

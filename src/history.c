@@ -13,8 +13,11 @@ static history_t *create_new_history_node(int id, char *ctime, char *command,
     history_t *new_history = malloc(sizeof(history_t));
 
     new_history->id = id;
-    new_history->ctime = my_strdup(ctime);
-    new_history->command = command;
+    if (ctime[my_strlen(ctime) - 1] == '\n')
+        new_history->ctime = my_strndup(ctime, my_strlen(ctime) - 1);
+    else
+        new_history->ctime = my_strdup(ctime);
+    new_history->command = my_strdup(command);
     new_history->next = next;
     return new_history;
 }
@@ -40,10 +43,9 @@ static history_t *get_history_aux(history_t **history, char *buf)
     char **tab = sep_str(buf, 1, "\n");
 
     for (int i = 0; i < my_strlen_array(tab); i++) {
-        tmp = sep_str(tab[i], 1, " ");
+        tmp = sep_str(tab[i], 1, "\t");
         *history = create_new_history_node(convert_str_in_int(tmp[0]), tmp[1],
-        parse_str(tab[i], 1 + my_strlen(tmp[0]) + 1 + my_strlen(tmp[1]) + 1,
-        my_strlen(tab[i])), *history);
+        tmp[2], *history);
         free_word_array(tmp);
     }
     free_word_array(tab);
@@ -53,7 +55,7 @@ static history_t *get_history_aux(history_t **history, char *buf)
 history_t *get_history(history_t **history)
 {
     struct stat st;
-    int fd = open(".history", O_RDONLY);
+    int fd = open(".history", O_RDWR | O_CREAT);
     char *buf;
 
     if (fd == -1) {
@@ -86,7 +88,7 @@ void print_history(int fd, history_t **history)
 
 static void save_history(history_t **history)
 {
-    int fd = open(".history", O_RDWR | O_TRUNC);
+    int fd = open(".history", O_WRONLY | O_TRUNC);
 
     if (fd == -1) {
         mini_printf("Can't find '.history' file.\n");
@@ -106,6 +108,7 @@ void destroy_history(history_t **history)
         tmp = node;
         node = node->next;
         free(tmp->ctime);
+        free(tmp->command);
         free(tmp);
     }
 }
@@ -115,20 +118,44 @@ void add_history(history_t **history, char *command)
     history_t *node = *history;
     history_t *tmp;
     time_t mytime = time(NULL);
+    char *time_str = ctime(&mytime);
 
-    if (my_strcmp(node->command, command) == 0) {
-        *history = node->next;
+    if (*history == NULL) {
+        *history = create_new_history_node(1, time_str, command, NULL);
         return;
     }
+    if (my_strcmp(node->command, command) == 0)
+        *history = node->next;
     while (node->next != NULL) {
         if (my_strcmp(node->next->command, command) == 0) {
             tmp = node->next;
             node->next = node->next->next;
+            free(tmp->command);
             free(tmp->ctime);
             free(tmp);
+            continue;
         }
         node = node->next;
     }
-    node->next = create_new_history_node(node->id, ctime(&mytime),
-    command, NULL);
+    node->next = create_new_history_node(node->id + 1, time_str, command,
+    NULL);
+}
+
+int history(shell_t *shell)
+{
+    if (my_strlen_array(shell->command_array) > 3) {
+        mini_printf("history: Too many arguments.\n");
+        shell->last_return = 1;
+        return 1;
+    }
+    for (int i = 1; i < my_strlen_array(shell->command_array); i++) {
+        if (!my_str_isnum(shell->command_array[i])) {
+            mini_printf("history: Badly formed number.\n");
+            shell->last_return = 1;
+            return 1;
+        }
+    }
+    print_history(1, &shell->history);
+    shell->last_return = 0;
+    return 0;
 }
