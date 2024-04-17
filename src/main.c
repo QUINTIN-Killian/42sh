@@ -36,18 +36,6 @@ static void destroy_shell_struct(shell_t *shell)
     }
 }
 
-void print_word_array(char **word_array)
-{
-    if (word_array == NULL) {
-        my_putstr("NULL\n");
-        return;
-    }
-    for (int i = 0; i < my_strlen_array(word_array); i++) {
-        my_putstr(word_array[i]);
-        my_putchar('\n');
-    }
-}
-
 int main(int ac, char **av, char **env)
 {
     shell_t shell;
