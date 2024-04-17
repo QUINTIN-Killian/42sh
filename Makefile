@@ -16,6 +16,7 @@ SRC	=	src/command_separators.c	\
 		src/my_env.c	\
 		src/my_scanf.c	\
 		src/my_setenv.c	\
+		src/var_env.c	\
 		src/my_unsetenv.c \
 		src/shell.c	\
 		src/exit.c	\

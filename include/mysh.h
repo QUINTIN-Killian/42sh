@@ -82,6 +82,9 @@ int history(char **command_array, shell_t *shell);
 //my_cd.c :
 int my_cd(char **command_array, shell_t *shell);
 
+//var_env.c :
+int explore_var_env(char **command_array, shell_t *shell);
+
 //functions.c :
 char *get_env_value(shell_t *shell, char *key);
 char **convert_linked_list_in_word_array(shell_t *shell);
