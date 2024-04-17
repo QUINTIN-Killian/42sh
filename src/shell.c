@@ -8,20 +8,6 @@
 
 #include "../include/mysh.h"
 
-static bool print_fd(shell_t *shell)
-{
-    char buf;
-
-    if (my_strlen_array(shell->separators) == 0 || my_strcmp(shell->separators
-    [my_strlen_array(shell->separators) - 1], "|") == 0) {
-        while (read(shell->fd_input, &buf, 1) > 0) {
-            write(1, &buf, 1);
-        }
-        close(shell->pipefd[0]);
-    }
-    return true;
-}
-
 static char *reimplace_var_env(char **command_array, shell_t *shell, int i)
 {
     char *key;

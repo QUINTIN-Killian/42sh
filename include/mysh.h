@@ -64,7 +64,6 @@ typedef struct shell_s {
     char **separators;
     int ind;
     int pipefd[2];
-    int fd_input;
     ast_node *ast;
 } shell_t;
 
@@ -92,7 +91,6 @@ int my_cd(char **command_array, shell_t *shell);
 
 //functions.c :
 char *get_env_value(shell_t *shell, char *key);
-char **parse_env_value(char const *str);
 char **convert_linked_list_in_word_array(shell_t *shell);
 int count_occ_motif(char *str, char *motif);
 
@@ -106,11 +104,6 @@ bool error_handling_input(shell_t *shell, char *input);
 //exit.c :
 int my_exit(char **command_array, shell_t *shell);
 
-//right_redirections.c :
-void double_right_redirection(shell_t *shell, char **command_array_sep, int i,
-    char **filename);
-void simple_right_redirection(shell_t *shell, char **filename);
-
 //shell.c :
 int my_exit(char **command_array, shell_t *shell);
 int shell_interface(shell_t *shell);
@@ -121,15 +114,7 @@ int my_setenv(char **command_array, shell_t *shell);
 //my_unsetenv.c :
 int my_unsetenv(char **command_array, shell_t *shell);
 
-//caller.c :
-void call_bin(char **command_array, shell_t *shell);
-
 //ast
-
-void ast_parse_semicolon(ast_node *node);
-void ast_parse_pipe(ast_node *node);
-void ast_parse_redirection_rigth(ast_node *node);
-void ast_parse_redirection_left(ast_node *node);
 void ast_parse(ast_node *node, char *pat);
 
 ast_node *create_ast_node(TokenType type, char *value);

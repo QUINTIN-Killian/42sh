@@ -8,8 +8,7 @@
 
 CC	=	gcc
 
-SRC	=	src/caller.c	\
-		src/command_separators.c	\
+SRC	=	src/command_separators.c	\
 		src/error_handling_input.c	\
 		src/functions.c	\
 		src/main.c	\
@@ -18,7 +17,6 @@ SRC	=	src/caller.c	\
 		src/my_scanf.c	\
 		src/my_setenv.c	\
 		src/my_unsetenv.c \
-		src/right_redirections.c	\
 		src/shell.c	\
 		src/exit.c	\
 		src/ast/ast.c	\
