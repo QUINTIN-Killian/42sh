@@ -74,7 +74,7 @@ int count_occ_motif(char *str, char *motif)
     for (int i = 0; i < my_strlen(str); i++) {
         if (i > my_strlen(str) - my_strlen(motif))
             return ans;
-        tmp = parse_str(str, i, i + my_strlen(motif) - 1);
+        tmp = parse_str(str, i, i + my_strlen(motif));
         if (my_strcmp(tmp, motif) == 0)
             ans++;
         free(tmp);
