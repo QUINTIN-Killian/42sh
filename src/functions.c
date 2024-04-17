@@ -36,16 +36,6 @@ char *get_env_value(shell_t *shell, char *key)
     return NULL;
 }
 
-static int det_len_word(char const *str, int ind)
-{
-    int ans = 0;
-
-    while (str[ind + ans] != ':' && (ind + ans) < my_strlen(str)) {
-        ans++;
-    }
-    return ans;
-}
-
 char **convert_linked_list_in_word_array(shell_t *shell)
 {
     env_t *node = shell->head;

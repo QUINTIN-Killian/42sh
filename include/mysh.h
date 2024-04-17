@@ -15,6 +15,7 @@
     #include <fcntl.h>
     #include <errno.h>
     #include <dirent.h>
+    #include <time.h>
 
     #define BUILTIN_ERROR (-1)
     #define BUILTIN_FINE (-2)
@@ -114,7 +115,9 @@ void free_ast_node(ast_node_t *node);
 ast_node_t *build_ast(char *input);
 int execute_ast_node(ast_node_t *node, shell_t *shell);
 
-void my_execve(char *path, char **args, shell_t *shell);
+//operator_executor2.c :
+void print_res(pid_t child, shell_t *shell);
+
 int print_execve_error(char *command, char *error);
 
 //executor

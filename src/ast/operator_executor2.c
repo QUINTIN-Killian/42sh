@@ -13,14 +13,14 @@
 #include "../../include/mysh.h"
 #include "../../include/my.h"
 
-static void print_res(pid_t child, char *program_name, shell_t *shell)
+void print_res(pid_t child, shell_t *shell)
 {
     int status;
 
     waitpid(child, &status, 0);
     if (WIFSIGNALED(status)) {
         status = WTERMSIG(status);
-        mini_fdprintf(0, "%s\n", strsignal(status));
+        mini_fdprintf(1, "%s\n", strsignal(status));
         if (WCOREDUMP(status))
             shell->last_return = 128 + status;
         else
@@ -72,7 +72,7 @@ int execute_input_here(ast_node_t *node, shell_t *shell)
         if (execvp(args[0], args) == -1)
             mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
     } else
-        print_res(pid, args[0], shell);
+        print_res(pid, shell);
     free_word_array(args);
     return pid;
 }
