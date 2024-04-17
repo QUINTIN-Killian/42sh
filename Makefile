@@ -20,6 +20,7 @@ SRC	=	src/caller.c	\
 		src/my_unsetenv.c \
 		src/right_redirections.c	\
 		src/shell.c	\
+		src/exit.c	\
 		src/ast/ast.c	\
 		src/ast/ast_parse.c	\
 		src/ast/ast_execute.c	\

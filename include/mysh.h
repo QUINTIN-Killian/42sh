@@ -103,6 +103,9 @@ void get_command_separators(shell_t *shell, char *command);
 //error_handling_command.c :
 bool error_handling_input(shell_t *shell, char *input);
 
+//exit.c :
+int my_exit(char **command_array, shell_t *shell);
+
 //right_redirections.c :
 void double_right_redirection(shell_t *shell, char **command_array_sep, int i,
     char **filename);
