@@ -102,7 +102,7 @@ int shell_interface(shell_t *shell)
         if (input == NULL)
             return 1;
         if ((my_strlen(input) == 1 && input[0] == '\n') ||
-        error_handling_command(shell, input)) {
+        error_handling_input(shell, input)) {
             free(input);
             continue;
         }

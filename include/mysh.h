@@ -85,7 +85,7 @@ history_t *get_history(history_t **history);
 void print_history(int fd, history_t **history);
 void destroy_history(history_t **history);
 void add_history(history_t **history, char *command);
-int history(shell_t *shell);
+int history(char **command_array, shell_t *shell);
 
 //my_cd.c :
 int my_cd(char **command_array, shell_t *shell);
@@ -96,18 +96,12 @@ char **parse_env_value(char const *str);
 char **convert_linked_list_in_word_array(shell_t *shell);
 int count_occ_motif(char *str, char *motif);
 
-//interpreter.c :
-void separator_interpreter1(char **command_array, shell_t *shell,
-    char **command_array_sep, int i);
-void command_interpreter(char **command_array, shell_t *shell,
-    char **command_array_sep, int i);
-
 //command_separators.c :
 char **realloc_tab_plus_one(char **tab);
 void get_command_separators(shell_t *shell, char *command);
 
 //error_handling_command.c :
-bool error_handling_command(shell_t *shell, char *input);
+bool error_handling_input(shell_t *shell, char *input);
 
 //right_redirections.c :
 void double_right_redirection(shell_t *shell, char **command_array_sep, int i,

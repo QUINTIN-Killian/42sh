@@ -10,7 +10,7 @@ CC	=	gcc
 
 SRC	=	src/caller.c	\
 		src/command_separators.c	\
-		src/error_handling_command.c	\
+		src/error_handling_input.c	\
 		src/functions.c	\
 		src/main.c	\
 		src/my_cd.c	\
