@@ -38,7 +38,6 @@ void my_exec(char **args, shell_t *shell)
         mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
 }
 
-
 static void input_here_loop(int fd[2], char *filename)
 {
     char *line = NULL;
@@ -73,10 +72,6 @@ int execute_input_here(ast_node_t *node, shell_t *shell)
     int res;
 
     res = must_exec(args, shell, fd);
-    if (is_exit(args, shell)) {
-        free_word_array(args);
-        return 0;
-    }
     if (res != 1)
         return res;
     pid = fork();

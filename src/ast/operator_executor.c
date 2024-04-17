@@ -22,7 +22,6 @@ int execute_normal(ast_node_t *node, shell_t *shell)
     pid = fork();
     if (pid == 0){
         my_exec(args, shell);
-
     } else
         print_res(pid, shell);
     free_word_array(args);
