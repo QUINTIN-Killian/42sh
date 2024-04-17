@@ -38,12 +38,12 @@ char **insert_elt_in_tab(char **tab, char *elt)
     return tab;
 }
 
-static bool is_sep2(char const *str, char **sep, int ind, int i)
+static int is_sep2(char const *str, char **sep, int ind, int i)
 {
     for (int j = ind; j < ind + my_strlen(sep[i]); j++)
         if (str[j] != sep[i][j - ind])
-            return false;
-    return true;
+            return 0;
+    return 1;
 }
 
 static int is_sep(char const *str, char **sep, int *ind)
