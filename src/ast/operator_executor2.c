@@ -18,13 +18,20 @@ void print_res(pid_t child, shell_t *shell)
     int status;
 
     waitpid(child, &status, 0);
-    if (WIFSIGNALED(status)) {
-        status = WTERMSIG(status);
-        mini_fdprintf(1, "%s\n", strsignal(status));
-        if (WCOREDUMP(status))
-            shell->last_return = 128 + status;
-        else
-            shell->last_return = 1;
+    if (WIFEXITED(status)) {
+        shell->last_return = WEXITSTATUS(status);
+        return;
+    } else if (WIFSIGNALED(status)) {
+        mini_printf("%s\n", strsignal(WTERMSIG(status)));
+        shell->last_return = status;
+        return;
+    }
+    if (WIFSTOPPED(status)) {
+        mini_printf("%s\n", strsignal(WSTOPSIG(status)));
+        shell->last_return = status;
+    } else if (errno != 0) {
+        mini_printf("%s\n", strerror(errno));
+        shell->last_return = status;
     }
 }
 
@@ -34,8 +41,10 @@ void my_exec(char **args, shell_t *shell)
         exit(0);
         return;
     }
-    if (execvp(args[0], args) == -1)
+    if (execvp(args[0], args) == -1){
         mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        exit(1);
+    }
 }
 
 static void input_here_loop(int fd[2], char *filename)
