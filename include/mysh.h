@@ -80,6 +80,13 @@ int my_env(char **command_array, shell_t *shell);
 int del_env(shell_t *shell, char *key);
 int change_var_env(shell_t *shell, char *key, char *new_env);
 
+//history.c :
+history_t *get_history(history_t **history);
+void print_history(int fd, history_t **history);
+void destroy_history(history_t **history);
+void add_history(history_t **history, char *command);
+int history(shell_t *shell);
+
 //my_cd.c :
 int my_cd(char **command_array, shell_t *shell);
 
