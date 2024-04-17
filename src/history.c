@@ -55,11 +55,11 @@ static history_t *get_history_aux(history_t **history, char *buf)
 history_t *get_history(history_t **history)
 {
     struct stat st;
-    int fd = open(".history", O_RDWR | O_CREAT);
+    int fd = open(".history", O_RDWR | O_CREAT, 0777);
     char *buf;
 
     if (fd == -1) {
-        mini_printf("Can't find '.history' file.\n");
+        mini_printf("Start : Can't find '.history' file.\n");
         return NULL;
     }
     if (stat(".history", &st) == -1 || st.st_size == 0 || st.st_size == 1) {
@@ -91,7 +91,7 @@ static void save_history(history_t **history)
     int fd = open(".history", O_WRONLY | O_TRUNC);
 
     if (fd == -1) {
-        mini_printf("Can't find '.history' file.\n");
+        mini_printf("End : Can't find '.history' file.\n");
         return;
     }
     print_history(fd, history);
