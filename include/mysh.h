@@ -62,9 +62,6 @@ typedef struct shell_s {
     ast_node_t *ast;
 } shell_t;
 
-//main.c :
-void print_word_array(char **word_array);
-
 //my_scanf.c :
 char *my_scanf(void);
 
