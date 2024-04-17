@@ -27,7 +27,7 @@ static void print_res(pid_t child, char *program_name, shell_t *shell)
     }
 }
 
-int execute_normal(ast_node *node, shell_t *shell)
+int execute_normal(ast_node_t *node, shell_t *shell)
 {
     int pid;
     char **args = sep_str(node->value, 2, " ", "\t");
@@ -46,7 +46,7 @@ int execute_normal(ast_node *node, shell_t *shell)
     return pid;
 }
 
-int execute_redirect(ast_node *node, shell_t *shell)
+int execute_redirect(ast_node_t *node, shell_t *shell)
 {
     int fd = open(node->right->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     char **args = sep_str(node->left->value, 2, " ", "\t");
@@ -70,7 +70,7 @@ int execute_redirect(ast_node *node, shell_t *shell)
     return pid;
 }
 
-int execute_pipe(ast_node *node, shell_t *shell)
+int execute_pipe(ast_node_t *node, shell_t *shell)
 {
     char **args = sep_str(node->value, 2, " ", "\t");
     int pid;
@@ -93,7 +93,7 @@ int execute_pipe(ast_node *node, shell_t *shell)
 }
 
 
-int execute_append(ast_node *node, shell_t *shell)
+int execute_append(ast_node_t *node, shell_t *shell)
 {
     int fd = open(node->right->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
     char **args = sep_str(node->left->value, 2, " ", "\t");
@@ -117,7 +117,7 @@ int execute_append(ast_node *node, shell_t *shell)
     return pid;
 }
 
-int execute_input(ast_node *node, shell_t *shell)
+int execute_input(ast_node_t *node, shell_t *shell)
 {
     int fd = open(node->right->value, O_RDONLY);
     char **args = sep_str(node->left->value, 2, " ", "\t");

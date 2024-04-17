@@ -47,7 +47,7 @@ static int pat_to_enum(char *pat)
     return 0;
 }
 
-void ast_parse(ast_node *node, char *pat)
+void ast_parse(ast_node_t *node, char *pat)
 {
     for (int i = 0; node->value[i] != '\0'; i++) {
         if (node->type != COMMAND)

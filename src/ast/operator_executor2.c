@@ -54,7 +54,7 @@ static int must_exec(char **args, shell_t *shell, int *fd)
     return (1);
 }
 
-int execute_input_here(ast_node *node, shell_t *shell)
+int execute_input_here(ast_node_t *node, shell_t *shell)
 {
     char **args = sep_str(node->left->value, 2, " ", "\t");
     int fd[2];

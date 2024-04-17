@@ -40,19 +40,14 @@ typedef enum {
     REDIRECTION_LEFT,
     DOUBLE_LEFT,
     DOUBLE_RIGHT
-} TokenType;
+} TokenType_t;
 
-typedef struct {
-    TokenType type;
+typedef struct ast_node_s {
+    TokenType_t type;
     char *value;
-} Token;
-
-typedef struct ast_node {
-    TokenType type;
-    char *value;
-    struct ast_node *left;
-    struct ast_node *right;
-} ast_node;
+    struct ast_node_s *left;
+    struct ast_node_s *right;
+} ast_node_t;
 
 typedef struct shell_s {
     int exit;
@@ -64,7 +59,7 @@ typedef struct shell_s {
     char **separators;
     int ind;
     int pipefd[2];
-    ast_node *ast;
+    ast_node_t *ast;
 } shell_t;
 
 //main.c :
@@ -115,23 +110,23 @@ int my_setenv(char **command_array, shell_t *shell);
 int my_unsetenv(char **command_array, shell_t *shell);
 
 //ast
-void ast_parse(ast_node *node, char *pat);
+void ast_parse(ast_node_t *node, char *pat);
 
-ast_node *create_ast_node(TokenType type, char *value);
-void free_ast_node(ast_node *node);
-ast_node *build_ast(char *input);
-int execute_ast_node(ast_node *node, shell_t *shell);
+ast_node_t *create_ast_node(TokenType_t type, char *value);
+void free_ast_node(ast_node_t *node);
+ast_node_t *build_ast(char *input);
+int execute_ast_node(ast_node_t *node, shell_t *shell);
 
 void my_execve(char *path, char **args, shell_t *shell);
 int print_execve_error(char *command, char *error);
 
 //executor
-int execute_normal(ast_node *node, shell_t *shell);
-int execute_redirect(ast_node *node, shell_t *shell);
-int execute_input(ast_node *node, shell_t *shell);
-int execute_append(ast_node *node, shell_t *shell);
-int execute_input_here(ast_node *node, shell_t *shell);
-int execute_pipe(ast_node *node, shell_t *shell);
+int execute_normal(ast_node_t *node, shell_t *shell);
+int execute_redirect(ast_node_t *node, shell_t *shell);
+int execute_input(ast_node_t *node, shell_t *shell);
+int execute_append(ast_node_t *node, shell_t *shell);
+int execute_input_here(ast_node_t *node, shell_t *shell);
+int execute_pipe(ast_node_t *node, shell_t *shell);
 
 int is_builtin(char **args, shell_t *shell);
 #endif

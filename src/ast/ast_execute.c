@@ -10,7 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 
-// static int execute_ast_command(ast_node *node, char ***env)
+// static int execute_ast_command(ast_node_t *node, char ***env)
 // {
 //     int rv = 0;
 
@@ -23,7 +23,7 @@
 //     return rv;
 // }
 
-static int execute_ast_semicolon(ast_node *node, shell_t *shell)
+static int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
 
@@ -34,7 +34,7 @@ static int execute_ast_semicolon(ast_node *node, shell_t *shell)
     return rv;
 }
 
-static int execute_ast_pipe(ast_node *node, shell_t *shell)
+static int execute_ast_pipe(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
     int fdtmp = dup(0);
@@ -78,7 +78,7 @@ int is_builtin(char **args, shell_t *shell)
     return 0;
 }
 
-int execute_ast_node(ast_node *node, shell_t *shell)
+int execute_ast_node(ast_node_t *node, shell_t *shell)
 {
     switch (node->type) {
         case PIPE:

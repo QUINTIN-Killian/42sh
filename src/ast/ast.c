@@ -11,9 +11,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-ast_node *create_ast_node(TokenType type, char *value)
+ast_node_t *create_ast_node(TokenType_t type, char *value)
 {
-    ast_node *node = (ast_node *)malloc(sizeof(ast_node));
+    ast_node_t *node = (ast_node_t *)malloc(sizeof(ast_node_t));
 
     node->type = type;
     node->value = my_strdup(value);
@@ -22,7 +22,7 @@ ast_node *create_ast_node(TokenType type, char *value)
     return node;
 }
 
-void free_ast_node(ast_node *node)
+void free_ast_node(ast_node_t *node)
 {
     free(node->value);
     if (node->left != NULL)
@@ -32,7 +32,7 @@ void free_ast_node(ast_node *node)
     free(node);
 }
 
-static void put_node_value(ast_node *node)
+static void put_node_value(ast_node_t *node)
 {
     my_putstr("|-- ");
     switch (node->type) {
@@ -54,7 +54,7 @@ static void put_node_value(ast_node *node)
     my_putstr("\n");
 }
 
-static void print_ast_tree(ast_node *node, int level)
+static void print_ast_tree(ast_node_t *node, int level)
 {
     if (node == NULL)
         return;
@@ -66,9 +66,9 @@ static void print_ast_tree(ast_node *node, int level)
     print_ast_tree(node->left, level + 1);
 }
 
-ast_node *build_ast(char *input)
+ast_node_t *build_ast(char *input)
 {
-    ast_node *root = create_ast_node(COMMAND, input);
+    ast_node_t *root = create_ast_node(COMMAND, input);
 
     ast_parse(root, ";");
     ast_parse(root, "|");
