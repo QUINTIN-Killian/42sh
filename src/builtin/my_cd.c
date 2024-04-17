@@ -6,7 +6,7 @@
 ** cd
 */
 
-#include "../include/mysh.h"
+#include "../../include/mysh.h"
 
 static int error_handling_cd(shell_t *shell, char **command_array)
 {
@@ -114,7 +114,7 @@ int my_cd(char **command_array, shell_t *shell)
     char *old_pwd;
 
     if (my_cd_aux(command_array, shell) != -2)
-        return 0;
+        return 1;
     buffer_old = getcwd(NULL, 0);
     old_pwd = concat_2_str("OLDPWD=", buffer_old);
     free(buffer_old);

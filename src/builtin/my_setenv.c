@@ -6,7 +6,7 @@
 ** my_setenv
 */
 
-#include "../include/mysh.h"
+#include "../../include/mysh.h"
 
 static int error_handling_key_setenv(shell_t *shell, char *key)
 {

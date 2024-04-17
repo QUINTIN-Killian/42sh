@@ -5,7 +5,7 @@
 ** history
 */
 
-#include "../include/mysh.h"
+#include "../../include/mysh.h"
 
 static history_t *create_new_history_node(int id, char *ctime, char *command,
     history_t *next)

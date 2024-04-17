@@ -12,15 +12,15 @@ SRC	=	src/command_separators.c	\
 		src/error_handling_input.c	\
 		src/functions.c	\
 		src/main.c	\
-		src/my_cd.c	\
-		src/my_env.c	\
+		src/builtin/my_cd.c	\
+		src/builtin/my_env.c	\
 		src/my_scanf.c	\
-		src/my_setenv.c	\
+		src/builtin/my_setenv.c	\
 		src/var_env.c	\
-		src/my_unsetenv.c \
+		src/builtin/my_unsetenv.c \
 		src/shell.c	\
-		src/exit.c	\
-		src/history.c	\
+		src/builtin/exit.c	\
+		src/builtin/history.c	\
 		src/ast/ast.c	\
 		src/ast/ast_parse.c	\
 		src/ast/ast_execute.c	\
@@ -47,6 +47,7 @@ $(EXEC):	$(LIB_NAME) $(OBJ)
 bin/%.o:	src/%.c
 	@mkdir -p bin
 	@mkdir -p bin/ast
+	@mkdir -p bin/builtin
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 clean:
