@@ -45,12 +45,12 @@ LIB_NAME	=	libmy.a
 
 all:	$(LIB_NAME)
 
-$(LIB_NAME):	$(OBJ)
+$(LIB_NAME):	$(H_NAME) $(OBJ)
 	ar rc $(LIB_NAME) $(OBJ)
 	cp $(LIB_NAME) ../..
 	cp $(H_NAME) ../../include
 
-bin/%.o:	%.c
+bin/%.o:	%.c $(H_NAME)
 	@mkdir -p bin
 	$(CC) -c $< -o $@ $(CFLAGS)
 

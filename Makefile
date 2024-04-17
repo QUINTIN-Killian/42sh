@@ -32,19 +32,22 @@ OBJ	=	$(SRC:src/%.c=bin/%.o)
 
 CFLAGS	=	-g3 -W -Wall
 
-LIB_NAME	=	libmy.a
-
 EXEC	=	42sh
+
+H_NAME	=	include/my.h	\
+			include/mysh.h
+
+LIB_NAME	=	libmy.a
 
 all:	compile_lib $(EXEC)
 
 compile_lib:
 	make -C lib/my
 
-$(EXEC):	$(LIB_NAME) $(OBJ)
+$(EXEC):	$(H_NAME) $(LIB_NAME) $(OBJ)
 	$(CC) -o $(EXEC) $(OBJ) -L. -lmy $(CFLAGS)
 
-bin/%.o:	src/%.c
+bin/%.o:	src/%.c $(H_NAME) $(LIB_NAME)
 	@mkdir -p bin
 	@mkdir -p bin/ast
 	$(CC) -c $< -o $@ $(CFLAGS)
