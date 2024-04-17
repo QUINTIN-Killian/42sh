@@ -35,7 +35,7 @@ int shell_interface(shell_t *shell)
         if (continue_shell_interface(shell, input))
             continue;
         shell->ast = build_ast(input);
-        shell->last_return = execute_ast_node(shell->ast, shell);
+        execute_ast_node(shell->ast, shell);
         free_ast_node(shell->ast);
         free(input);
     }
