@@ -32,7 +32,7 @@ static int error_var_env(char **command_array, int i, shell_t *shell)
 {
     char *key;
 
-    if (command_array[i][0] == '$') {
+    if (my_strlen(command_array[i]) > 1 && command_array[i][0] == '$') {
         key = reimplace_var_env(command_array, shell, i);
         if (key != NULL) {
             mini_printf("%s: Undefined variable.\n", key);
