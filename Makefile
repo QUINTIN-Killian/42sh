@@ -19,6 +19,7 @@ SRC	=	src/command_separators.c	\
 		src/my_unsetenv.c \
 		src/shell.c	\
 		src/exit.c	\
+		src/history.c	\
 		src/ast/ast.c	\
 		src/ast/ast_parse.c	\
 		src/ast/ast_execute.c	\

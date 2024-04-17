@@ -63,8 +63,12 @@ int shell_interface(shell_t *shell)
         input = my_scanf();
         if (input == NULL)
             return 1;
-        if ((my_strlen(input) == 1 && input[0] == '\n') ||
-        error_handling_input(shell, input)) {
+        if ((my_strlen(input) == 1 && input[0] == '\n')) {
+            free(input);
+            continue;
+        }
+        add_history(&shell->history, input);
+        if (error_handling_input(shell, input)) {
             free(input);
             continue;
         }
