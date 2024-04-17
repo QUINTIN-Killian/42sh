@@ -25,6 +25,13 @@ typedef struct env_s {
     struct env_s *next;
 } env_t;
 
+typedef struct history_s {
+    int id;
+    char *ctime;
+    char *command;
+    struct history_s *next;
+} history_t;
+
 typedef enum {
     COMMAND,
     PIPE,
@@ -52,6 +59,7 @@ typedef struct shell_s {
     int ac;
     char **av;
     env_t *head;
+    history_t *history;
     int last_return;
     char **separators;
     int ind;
