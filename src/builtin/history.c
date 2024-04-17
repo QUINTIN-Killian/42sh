@@ -75,13 +75,17 @@ history_t *get_history(history_t **history)
     return rev_history(history);
 }
 
-void print_history(int fd, history_t **history)
+void print_history(int fd, history_t **history, int nb_print)
 {
+    int len = get_len_history(history);
     history_t *node = *history;
 
     while (node != NULL) {
-        mini_fdprintf(fd, "\t%d\t%s\t%s\n", node->id, node->ctime,
-        node->command);
+        if (len <= nb_print) {
+            mini_fdprintf(fd, "\t%d\t%s\t%s\n", node->id, node->ctime,
+            node->command);
+        }
+        len--;
         node = node->next;
     }
 }
@@ -94,7 +98,7 @@ static void save_history(history_t **history)
         mini_printf("End : Can't find '.history' file.\n");
         return;
     }
-    print_history(fd, history);
+    print_history(fd, history, get_len_history(history));
     close(fd);
 }
 
@@ -160,7 +164,11 @@ int history(char **command_array, shell_t *shell)
             return 1;
         }
     }
-    print_history(1, &shell->history);
+    if (my_strlen_array(command_array) == 1)
+        print_history(1, &shell->history, get_len_history(&shell->history));
+    else
+        print_history(1, &shell->history,
+        convert_str_in_int(command_array[1]));
     shell->last_return = 0;
     return 1;
 }

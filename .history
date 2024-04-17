@@ -1,0 +1,7 @@
+	4	Wed Apr 17 15:55:25 2024	history 1
+	5	Wed Apr 17 15:55:39 2024	history 4
+	6	Wed Apr 17 15:55:45 2024	ls
+	9	Wed Apr 17 15:57:17 2024	./bonus/my_segfault
+	10	Wed Apr 17 15:57:35 2024	echo $?
+	11	Wed Apr 17 15:58:16 2024	history
+	12	Wed Apr 17 15:58:21 2024	exit

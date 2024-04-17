@@ -74,10 +74,13 @@ int change_var_env(shell_t *shell, char *key, char *new_env);
 
 //history.c :
 history_t *get_history(history_t **history);
-void print_history(int fd, history_t **history);
+void print_history(int fd, history_t **history, int nb_print);
 void destroy_history(history_t **history);
 void add_history(history_t **history, char *command);
 int history(char **command_array, shell_t *shell);
+
+//history2.c :
+int get_len_history(history_t **history);
 
 //my_cd.c :
 int my_cd(char **command_array, shell_t *shell);
