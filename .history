@@ -1,0 +1,4 @@
+	1	Wed Apr 17 15:47:31 2024	ls ; ms
+	2	Wed Apr 17 15:48:11 2024	ls | grep 42
+	4	Wed Apr 17 15:48:20 2024	feznfi
+	5	Wed Apr 17 15:48:28 2024	exit

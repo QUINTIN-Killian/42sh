@@ -56,7 +56,7 @@ void ast_parse(ast_node_t *node, char *pat)
             node->left = create_ast_node(COMMAND,
                 my_strndup(node->value, i));
             node->right = create_ast_node(COMMAND,
-                my_strdup(clear_str(&node->value[i + my_strlen(pat)])));
+                clear_str(&node->value[i + my_strlen(pat)]));
             node->type = pat_to_enum(pat);
         }
     }

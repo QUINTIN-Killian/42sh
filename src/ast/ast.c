@@ -17,6 +17,7 @@ ast_node_t *create_ast_node(TokenType_t type, char *value)
 
     node->type = type;
     node->value = my_strdup(value);
+    free(value);
     node->left = NULL;
     node->right = NULL;
     return node;
@@ -68,7 +69,7 @@ static void print_ast_tree(ast_node_t *node, int level)
 
 ast_node_t *build_ast(char *input)
 {
-    ast_node_t *root = create_ast_node(COMMAND, input);
+    ast_node_t *root = create_ast_node(COMMAND, my_strdup(input));
 
     ast_parse(root, ";");
     ast_parse(root, "|");
