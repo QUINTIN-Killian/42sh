@@ -141,15 +141,15 @@ void add_history(history_t **history, char *command)
     NULL);
 }
 
-int history(shell_t *shell)
+int history(char **command_array, shell_t *shell)
 {
-    if (my_strlen_array(shell->command_array) > 3) {
+    if (my_strlen_array(command_array) > 3) {
         mini_printf("history: Too many arguments.\n");
         shell->last_return = 1;
         return 1;
     }
-    for (int i = 1; i < my_strlen_array(shell->command_array); i++) {
-        if (!my_str_isnum(shell->command_array[i])) {
+    for (int i = 1; i < my_strlen_array(command_array); i++) {
+        if (!my_str_isnum(command_array[i])) {
             mini_printf("history: Badly formed number.\n");
             shell->last_return = 1;
             return 1;
