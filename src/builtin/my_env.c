@@ -6,7 +6,7 @@
 ** env
 */
 
-#include "../include/mysh.h"
+#include "../../include/mysh.h"
 
 env_t *add_env(char *env)
 {

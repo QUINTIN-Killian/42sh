@@ -132,4 +132,6 @@ int execute_input_here(ast_node_t *node, shell_t *shell);
 int execute_pipe(ast_node_t *node, shell_t *shell);
 
 int is_builtin(char **args, shell_t *shell);
+void my_exec(char **args, shell_t *shell);
+int is_exit(char **args, shell_t *shell);
 #endif

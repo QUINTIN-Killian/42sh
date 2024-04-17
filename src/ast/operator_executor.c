@@ -5,8 +5,6 @@
 ** operator_executor.c
 */
 
-#include <string.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "../../include/mysh.h"
@@ -17,14 +15,13 @@ int execute_normal(ast_node_t *node, shell_t *shell)
     int pid;
     char **args = sep_str(node->value, 2, " ", "\t");
 
-    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
+    if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;
     }
     pid = fork();
     if (pid == 0){
-        if (execvp(args[0], args) == -1)
-            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        my_exec(args, shell);
     } else
         print_res(pid, shell);
     free_word_array(args);
@@ -39,7 +36,7 @@ int execute_redirect(ast_node_t *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n");
-    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
+    if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -47,8 +44,7 @@ int execute_redirect(ast_node_t *node, shell_t *shell)
     if (pid == 0){
         dup2(fd, 1);
         close(fd);
-        if (execvp(args[0], args) == -1)
-            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        my_exec(args, shell);
     } else
         print_res(pid, shell);
     free_word_array(args);
@@ -60,7 +56,7 @@ int execute_pipe(ast_node_t *node, shell_t *shell)
     char **args = sep_str(node->value, 2, " ", "\t");
     int pid;
 
-    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
+    if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -69,8 +65,7 @@ int execute_pipe(ast_node_t *node, shell_t *shell)
         close(shell->pipefd[0]);
         dup2(shell->pipefd[1], STDOUT_FILENO);
         close(shell->pipefd[1]);
-        if (execvp(args[0], args) == -1)
-            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        my_exec(args, shell);
     } else
         print_res(pid, shell);
     free_word_array(args);
@@ -85,7 +80,7 @@ int execute_append(ast_node_t *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n");
-    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
+    if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -93,8 +88,7 @@ int execute_append(ast_node_t *node, shell_t *shell)
     if (pid == 0){
         dup2(fd, 1);
         close(fd);
-        if (execvp(args[0], args) == -1)
-            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        my_exec(args, shell);
     } else
         print_res(pid, shell);
     free_word_array(args);
@@ -109,7 +103,7 @@ int execute_input(ast_node_t *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "No such file or directory.\n");
-    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
+    if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -117,8 +111,7 @@ int execute_input(ast_node_t *node, shell_t *shell)
     if (pid == 0){
         dup2(fd, 0);
         close(fd);
-        if (execvp(args[0], args) == -1)
-            mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        my_exec(args, shell);
     } else
         print_res(pid, shell);
     free_word_array(args);

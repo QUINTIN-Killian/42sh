@@ -5,7 +5,7 @@
 ** exit
 */
 
-#include "../include/mysh.h"
+#include "../../include/mysh.h"
 
 int my_exit(char **command_array, shell_t *shell)
 {
