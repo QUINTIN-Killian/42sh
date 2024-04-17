@@ -113,10 +113,19 @@ void destroy_history(history_t **history)
     }
 }
 
+static void destroy_double_node(history_t *node)
+{
+    history_t *tmp = node->next;
+
+    node->next = node->next->next;
+    free(tmp->command);
+    free(tmp->ctime);
+    free(tmp);
+}
+
 void add_history(history_t **history, char *command)
 {
     history_t *node = *history;
-    history_t *tmp;
     time_t mytime = time(NULL);
     char *time_str = ctime(&mytime);
 
@@ -128,11 +137,7 @@ void add_history(history_t **history, char *command)
         *history = node->next;
     while (node->next != NULL) {
         if (my_strcmp(node->next->command, command) == 0) {
-            tmp = node->next;
-            node->next = node->next->next;
-            free(tmp->command);
-            free(tmp->ctime);
-            free(tmp);
+            destroy_double_node(node);
             continue;
         }
         node = node->next;

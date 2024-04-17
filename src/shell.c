@@ -53,6 +53,20 @@ int explore_var_env(char **command_array, shell_t *shell)
     return 0;
 }
 
+static int continue_shell_interface(shell_t *shell, char *input)
+{
+    if ((my_strlen(input) == 1 && input[0] == '\n')) {
+        free(input);
+        return 1;
+    }
+    add_history(&shell->history, input);
+    if (error_handling_input(shell, input)) {
+        free(input);
+        return 1;
+    }
+    return 0;
+}
+
 int shell_interface(shell_t *shell)
 {
     char *input;
@@ -63,15 +77,8 @@ int shell_interface(shell_t *shell)
         input = my_scanf();
         if (input == NULL)
             return 1;
-        if ((my_strlen(input) == 1 && input[0] == '\n')) {
-            free(input);
+        if (continue_shell_interface(shell, input))
             continue;
-        }
-        add_history(&shell->history, input);
-        if (error_handling_input(shell, input)) {
-            free(input);
-            continue;
-        }
         shell->ast = build_ast(input);
         execute_ast_node(shell->ast, shell);
         free_ast_node(shell->ast);
