@@ -52,6 +52,8 @@ int is_builtin(char **args, shell_t *shell)
         return my_unsetenv(args, shell);
     if (my_strcmp(args[0], "exit") == 0)
         return my_exit(args, shell);
+    if (my_strcmp(args[0], "history") == 0)
+        return history(args, shell);
     return 0;
 }
 

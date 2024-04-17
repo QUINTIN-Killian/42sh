@@ -157,5 +157,5 @@ int history(char **command_array, shell_t *shell)
     }
     print_history(1, &shell->history);
     shell->last_return = 0;
-    return 0;
+    return 1;
 }
