@@ -7,16 +7,30 @@
 
 #include "../../include/mysh.h"
 
-static history_t *create_new_history_node(int id, char *ctime, char *command,
+static char *get_time_parsed(char *ctime)
+{
+    char *ans;
+    char *tmp;
+    char **tab = sep_str(ctime, 1, ":");
+
+    ans = concat_str(3, &(tab[0][my_strlen(tab[0]) - 2]), ":", tab[1]);
+    free_word_array(tab);
+    if (ans[0] == '0') {
+        tmp = my_strdup(ans);
+        free(ans);
+        ans = my_strdup(&(tmp[1]));
+        free(tmp);
+    }
+    return ans;
+}
+
+history_t *create_new_history_node(int id, char *ctime, char *command,
     history_t *next)
 {
     history_t *new_history = malloc(sizeof(history_t));
 
     new_history->id = id;
-    if (ctime[my_strlen(ctime) - 1] == '\n')
-        new_history->ctime = my_strndup(ctime, my_strlen(ctime) - 1);
-    else
-        new_history->ctime = my_strdup(ctime);
+    new_history->ctime = get_time_parsed(ctime);
     new_history->command = my_strdup(command);
     new_history->next = next;
     return new_history;
@@ -115,60 +129,4 @@ void destroy_history(history_t **history)
         free(tmp->command);
         free(tmp);
     }
-}
-
-static void destroy_double_node(history_t *node)
-{
-    history_t *tmp = node->next;
-
-    node->next = node->next->next;
-    free(tmp->command);
-    free(tmp->ctime);
-    free(tmp);
-}
-
-void add_history(history_t **history, char *command)
-{
-    history_t *node = *history;
-    time_t mytime = time(NULL);
-    char *time_str = ctime(&mytime);
-
-    if (*history == NULL) {
-        *history = create_new_history_node(1, time_str, command, NULL);
-        return;
-    }
-    if (my_strcmp(node->command, command) == 0)
-        *history = node->next;
-    while (node->next != NULL) {
-        if (my_strcmp(node->next->command, command) == 0) {
-            destroy_double_node(node);
-            continue;
-        }
-        node = node->next;
-    }
-    node->next = create_new_history_node(node->id + 1, time_str, command,
-    NULL);
-}
-
-int history(char **command_array, shell_t *shell)
-{
-    if (my_strlen_array(command_array) > 3) {
-        mini_printf("history: Too many arguments.\n");
-        shell->last_return = 1;
-        return 1;
-    }
-    for (int i = 1; i < my_strlen_array(command_array); i++) {
-        if (!my_str_isnum(command_array[i])) {
-            mini_printf("history: Badly formed number.\n");
-            shell->last_return = 1;
-            return 1;
-        }
-    }
-    if (my_strlen_array(command_array) == 1)
-        print_history(1, &shell->history, get_len_history(&shell->history));
-    else
-        print_history(1, &shell->history,
-        convert_str_in_int(command_array[1]));
-    shell->last_return = 0;
-    return 1;
 }
