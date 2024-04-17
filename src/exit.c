@@ -28,5 +28,5 @@ int my_exit(char **command_array, shell_t *shell)
     }
     shell->last_return = convert_str_in_int(command_array[1]);
     shell->exit = 1;
-    return 0;
+    return 1;
 }

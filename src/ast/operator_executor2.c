@@ -49,7 +49,7 @@ static int must_exec(char **args, shell_t *shell, int *fd)
         return BUILTIN_ERROR;
     if (is_builtin(args, shell) == 1){
         free_word_array(args);
-        return(0);
+        return (0);
     }
     return (1);
 }

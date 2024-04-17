@@ -10,19 +10,6 @@
 #include <string.h>
 #include <unistd.h>
 
-// static int execute_ast_command(ast_node_t *node, char ***env)
-// {
-//     int rv = 0;
-
-//     if (node->left != NULL)
-//         rv = execute_ast_node(node->left, env);
-//     if (node->value)
-//         rv = do_command(node->value, env);
-//     if (node->right != NULL)
-//         rv = execute_ast_node(node->right, env);
-//     return rv;
-// }
-
 static int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
@@ -55,26 +42,16 @@ static int execute_ast_pipe(ast_node_t *node, shell_t *shell)
 
 int is_builtin(char **args, shell_t *shell)
 {
-    if (my_strcmp(args[0], "cd") == 0){
-        my_cd(args, shell);
-        return 1;
-    }
-    if (my_strcmp(args[0], "env") == 0){
-        my_env(args, shell);
-        return 1;
-    }
-    if (my_strcmp(args[0], "setenv") == 0){
-        my_setenv(args, shell);
-        return 1;
-    }
-    if (my_strcmp(args[0], "unsetenv") == 0){
-        my_unsetenv(args, shell);
-        return 1;
-    }
-    if (my_strcmp(args[0], "exit") == 0){
-        my_exit(args, shell);
-        return 1;
-    }
+    if (my_strcmp(args[0], "cd") == 0)
+        return my_cd(args, shell);
+    if (my_strcmp(args[0], "env") == 0)
+        return my_env(args, shell);
+    if (my_strcmp(args[0], "setenv") == 0)
+        return my_setenv(args, shell);
+    if (my_strcmp(args[0], "unsetenv") == 0)
+        return my_unsetenv(args, shell);
+    if (my_strcmp(args[0], "exit") == 0)
+        return my_exit(args, shell);
     return 0;
 }
 
@@ -96,6 +73,6 @@ int execute_ast_node(ast_node_t *node, shell_t *shell)
         case DOUBLE_LEFT:
             return execute_input_here(node, shell);
         default:
-            return  execute_ast_semicolon(node, shell);
+            return execute_ast_semicolon(node, shell);
     }
 }

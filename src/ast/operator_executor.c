@@ -34,7 +34,7 @@ int execute_normal(ast_node_t *node, shell_t *shell)
 
     if (is_builtin(args, shell) == 1){
         free_word_array(args);
-        return(0);
+        return 0;
     }
     pid = fork();
     if (pid == 0){
@@ -56,7 +56,7 @@ int execute_redirect(ast_node_t *node, shell_t *shell)
         return print_execve_error(args[0], "Permission denied.\n");
     if (is_builtin(args, shell) == 1){
         free_word_array(args);
-        return(0);
+        return 0;
     }
     pid = fork();
     if (pid == 0){
@@ -77,7 +77,7 @@ int execute_pipe(ast_node_t *node, shell_t *shell)
 
     if (is_builtin(args, shell) == 1){
         free_word_array(args);
-        return(0);
+        return 0;
     }
     pid = fork();
     if (pid == 0){
@@ -92,7 +92,6 @@ int execute_pipe(ast_node_t *node, shell_t *shell)
     return pid;
 }
 
-
 int execute_append(ast_node_t *node, shell_t *shell)
 {
     int fd = open(node->right->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -103,7 +102,7 @@ int execute_append(ast_node_t *node, shell_t *shell)
         return print_execve_error(args[0], "Permission denied.\n");
     if (is_builtin(args, shell) == 1){
         free_word_array(args);
-        return(0);
+        return 0;
     }
     pid = fork();
     if (pid == 0){
@@ -127,7 +126,7 @@ int execute_input(ast_node_t *node, shell_t *shell)
         return print_execve_error(args[0], "No such file or directory.\n");
     if (is_builtin(args, shell) == 1){
         free_word_array(args);
-        return(0);
+        return 0;
     }
     pid = fork();
     if (pid == 0){

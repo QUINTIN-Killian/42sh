@@ -120,5 +120,5 @@ int my_cd(char **command_array, shell_t *shell)
     free(buffer_old);
     ans = chdir(command_array[1]);
     cd_switch_env(command_array, shell, ans, old_pwd);
-    return ans;
+    return 1;
 }

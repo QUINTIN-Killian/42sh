@@ -76,5 +76,5 @@ int my_setenv(char **command_array, shell_t *shell)
     }
     free(env);
     shell->last_return = 0;
-    return 0;
+    return 1;
 }

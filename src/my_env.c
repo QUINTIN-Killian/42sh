@@ -113,7 +113,7 @@ int my_env(char **command_array, shell_t *shell)
         }
     }
     shell->last_return = 0;
-    return 0;
+    return 1;
 }
 
 int change_var_env(shell_t *shell, char *key, char *new_env)
