@@ -15,9 +15,11 @@ int print_execve_error(char *command, char *error, char **args)
     return BUILTIN_ERROR;
 }
 
-int is_exit(char **args, shell_t *shell)
+int is_builtin_exp(char **args, shell_t *shell)
 {
     if (my_strcmp(args[0], "exit") == 0)
         return my_exit(args, shell);
+    if (my_strcmp(args[0], "cd") == 0)
+        return my_cd(args, shell);
     return 0;
 }

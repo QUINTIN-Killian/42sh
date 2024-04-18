@@ -10,6 +10,15 @@
 #include <string.h>
 #include <unistd.h>
 
+
+const builtin_t builtin[] = {
+    {"env", my_env},
+    {"setenv", my_setenv},
+    {"unsetenv", my_unsetenv},
+    {"history", history},
+    {NULL, NULL}
+};
+
 static int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
@@ -42,18 +51,10 @@ static int execute_ast_pipe(ast_node_t *node, shell_t *shell)
 
 int is_builtin(char **args, shell_t *shell)
 {
-    if (my_strcmp(args[0], "cd") == 0)
-        return my_cd(args, shell);
-    if (my_strcmp(args[0], "env") == 0)
-        return my_env(args, shell);
-    if (my_strcmp(args[0], "setenv") == 0)
-        return my_setenv(args, shell);
-    if (my_strcmp(args[0], "unsetenv") == 0)
-        return my_unsetenv(args, shell);
-    if (my_strcmp(args[0], "exit") == 0)
-        return my_exit(args, shell);
-    if (my_strcmp(args[0], "history") == 0)
-        return history(args, shell);
+    for (int i = 0; builtin[i].name != NULL; i++){
+        if (my_strcmp(args[0], builtin[i].name) == 0)
+            return builtin[i].f(args, shell);
+    }
     return 0;
 }
 
