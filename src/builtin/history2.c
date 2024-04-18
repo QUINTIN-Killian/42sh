@@ -147,8 +147,7 @@ static char *get_history_command_by_id(history_t **history, int id,
     return NULL;
 }
 
-static char *get_history_command_by_id_minus(history_t **history, int id,
-    char *input)
+static char *get_history_command_by_id_minus(history_t **history, int id)
 {
     history_t *node = *history;
 
@@ -177,7 +176,7 @@ char *get_history_id(history_t **history, char *input)
     if (id != -1) {
         if (input[1] == '-') {
             id = get_len_history(history) + 1 - id;
-            return get_history_command_by_id_minus(history, id, input);
+            return get_history_command_by_id_minus(history, id);
         }
         return get_history_command_by_id(history, id, input);
     }
