@@ -8,20 +8,25 @@
 
 #include "../include/mysh.h"
 
-static int continue_shell_interface(shell_t *shell, char *input)
+static int continue_shell_interface(shell_t *shell, char **input)
 {
-    if ((my_strlen(input) == 1 && input[0] == '\n')) {
-        free(input);
+    char *tmp;
+
+    if ((my_strlen(*input) == 1 && *input[0] == '\n')) {
+        free(*input);
         return 1;
     }
-    input = get_history_id(&shell->history, input);
-    if (input == NULL) {
+    tmp = my_strdup(get_history_id(&shell->history, *input));
+    if (tmp == NULL) {
+        free(*input);
         shell->last_return = 1;
         return 1;
     }
-    add_history(&shell->history, input);
-    if (error_handling_input(shell, input)) {
-        free(input);
+    free(*input);
+    *input = tmp;
+    add_history(&shell->history, *input);
+    if (error_handling_input(shell, *input)) {
+        free(*input);
         return 1;
     }
     return 0;
@@ -37,7 +42,7 @@ int shell_interface(shell_t *shell)
         input = my_scanf();
         if (input == NULL)
             return 1;
-        if (continue_shell_interface(shell, input))
+        if (continue_shell_interface(shell, &input))
             continue;
         shell->ast = build_ast(input);
         execute_ast_node(shell->ast, shell);
