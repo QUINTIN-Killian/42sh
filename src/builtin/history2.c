@@ -122,14 +122,12 @@ static char *get_history_command_by_command(history_t **history, char *input)
         == 0) {
             mini_printf("%s\n", node->command);
             *history = rev_history(history);
-            free(input);
-            return my_strdup(node->command);
+            return node->command;
         }
         node = node->next;
     }
     *history = rev_history(history);
     mini_printf("%s: Event not found.\n", &(input[1]));
-    free(input);
     return NULL;
 }
 
@@ -141,13 +139,11 @@ static char *get_history_command_by_id(history_t **history, int id,
     while (node != NULL) {
         if (node->id == id) {
             mini_printf("%s\n", node->command);
-            free(input);
-            return my_strdup(node->command);
+            return node->command;
         }
         node = node->next;
     }
     mini_printf("%s: Event not found.\n", &(input[1]));
-    free(input);
     return NULL;
 }
 
@@ -158,7 +154,6 @@ static char *get_history_command_by_id_minus(history_t **history, int id,
 
     if (id <= 0 || id > get_len_history(history)) {
         mini_printf("%d: Event not found.\n", id);
-        free(input);
         return NULL;
     }
     while (id != 1) {
@@ -166,8 +161,7 @@ static char *get_history_command_by_id_minus(history_t **history, int id,
         node = node->next;
     }
     mini_printf("%s\n", node->command);
-    free(input);
-    return my_strdup(node->command);
+    return node->command;
 }
 
 char *get_history_id(history_t **history, char *input)
