@@ -35,7 +35,7 @@ int execute_redirect(ast_node_t *node, shell_t *shell)
     int pid;
 
     if (fd == -1)
-        return print_execve_error(args[0], "Permission denied.\n");
+        return print_execve_error(args[0], "Permission denied.\n", args);
     if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;
@@ -79,7 +79,7 @@ int execute_append(ast_node_t *node, shell_t *shell)
     int pid;
 
     if (fd == -1)
-        return print_execve_error(args[0], "Permission denied.\n");
+        return print_execve_error(args[0], "Permission denied.\n", args);
     if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;
@@ -102,7 +102,7 @@ int execute_input(ast_node_t *node, shell_t *shell)
     int pid;
 
     if (fd == -1)
-        return print_execve_error(args[0], "No such file or directory.\n");
+        return print_execve_error(args[0], "No such file or directory.\n", args);
     if (explore_var_env(args, shell) || is_exit(args, shell)) {
         free_word_array(args);
         return 0;

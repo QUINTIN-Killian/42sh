@@ -121,7 +121,7 @@ int execute_ast_node(ast_node_t *node, shell_t *shell);
 //operator_executor2.c :
 void print_res(pid_t child, shell_t *shell);
 
-int print_execve_error(char *command, char *error);
+int print_execve_error(char *command, char *error, char **args);
 
 //executor
 int execute_normal(ast_node_t *node, shell_t *shell);
