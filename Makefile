@@ -21,6 +21,7 @@ SRC	=	src/command_separators.c	\
 		src/shell.c	\
 		src/builtin/exit.c	\
 		src/builtin/history.c	\
+		src/builtin/history2.c	\
 		src/ast/ast.c	\
 		src/ast/ast_parse.c	\
 		src/ast/ast_execute.c	\
