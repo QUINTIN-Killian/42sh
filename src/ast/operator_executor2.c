@@ -42,7 +42,7 @@ void my_exec(char **args, shell_t *shell)
         return;
     }
     if (execvp(args[0], args) == -1){
-        mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        mini_fdprintf(2, "%s: Commande not found.\n", args[0]);
         exit(1);
     }
 }
