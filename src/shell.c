@@ -14,6 +14,11 @@ static int continue_shell_interface(shell_t *shell, char *input)
         free(input);
         return 1;
     }
+    input = get_history_id(&shell->history, input);
+    if (input == NULL) {
+        shell->last_return = 1;
+        return 1;
+    }
     add_history(&shell->history, input);
     if (error_handling_input(shell, input)) {
         free(input);

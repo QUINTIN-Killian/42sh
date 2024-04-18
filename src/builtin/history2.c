@@ -74,3 +74,82 @@ int history(char **command_array, shell_t *shell)
     shell->last_return = 0;
     return 1;
 }
+
+static char *get_history_command_by_command(history_t **history, char *input)
+{
+    history_t *node;
+
+    *history = rev_history(history);
+    node = *history;
+    while (node != NULL) {
+        if (my_strncmp(node->command, &(input[1]), my_strlen(&(input[1])))
+        == 0) {
+            mini_printf("%s\n", node->command);
+            *history = rev_history(history);
+            free(input);
+            return my_strdup(node->command);
+        }
+        node = node->next;
+    }
+    *history = rev_history(history);
+    mini_printf("%s: Event not found.\n", &(input[1]));
+    free(input);
+    return NULL;
+}
+
+static char *get_history_command_by_id(history_t **history, int id,
+    char *input)
+{
+    history_t *node = *history;
+
+    while (node != NULL) {
+        if (node->id == id) {
+            mini_printf("%s\n", node->command);
+            free(input);
+            return my_strdup(node->command);
+        }
+        node = node->next;
+    }
+    mini_printf("%s: Event not found.\n", &(input[1]));
+    free(input);
+    return NULL;
+}
+
+static char *get_history_command_by_id_minus(history_t **history, int id,
+    char *input)
+{
+    history_t *node = *history;
+
+    if (id <= 0 || id > get_len_history(history)) {
+        mini_printf("%d: Event not found.\n", id);
+        free(input);
+        return NULL;
+    }
+    while (id != 1) {
+        id--;
+        node = node->next;
+    }
+    mini_printf("%s\n", node->command);
+    free(input);
+    return my_strdup(node->command);
+}
+
+char *get_history_id(history_t **history, char *input)
+{
+    int id = -1;
+
+    if (input == NULL || my_strlen(input) <= 1 || input[0] != '!')
+        return input;
+    if (input[1] == '-' && my_str_isnum(&(input[2])))
+        id = convert_str_in_int(&(input[2]));
+    else if (my_str_isnum(&(input[1])))
+        id = convert_str_in_int(&(input[1]));
+    if (id != -1) {
+        if (input[1] == '-') {
+            id = get_len_history(history) + 1 - id;
+            return get_history_command_by_id_minus(history, id, input);
+        }
+        return get_history_command_by_id(history, id, input);
+    }
+    return get_history_command_by_command(history, input);
+}

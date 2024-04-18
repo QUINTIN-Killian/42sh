@@ -78,11 +78,13 @@ void print_history(int fd, history_t **history, int nb_print);
 void destroy_history(history_t **history);
 history_t *create_new_history_node(int id, char *ctime, char *command,
     history_t *next);
+history_t *rev_history(history_t **history);
 
 //history2.c :
 int get_len_history(history_t **history);
 void add_history(history_t **history, char *command);
 int history(char **command_array, shell_t *shell);
+char *get_history_id(history_t **history, char *input);
 
 //my_cd.c :
 int my_cd(char **command_array, shell_t *shell);

@@ -11,9 +11,12 @@ static char *get_time_parsed(char *ctime)
 {
     char *ans;
     char *tmp;
-    char **tab = sep_str(ctime, 1, ":");
+    char **tab = sep_str(ctime, 2, ":", " ");
 
-    ans = concat_str(3, &(tab[0][my_strlen(tab[0]) - 2]), ":", tab[1]);
+    if (my_strlen_array(tab) == 2)
+        ans = concat_str(3, tab[0], ":", tab[1]);
+    else
+        ans = concat_str(3, tab[3], ":", tab[4]);
     free_word_array(tab);
     if (ans[0] == '0') {
         tmp = my_strdup(ans);
@@ -36,7 +39,7 @@ history_t *create_new_history_node(int id, char *ctime, char *command,
     return new_history;
 }
 
-static history_t *rev_history(history_t **history)
+history_t *rev_history(history_t **history)
 {
     history_t *p = NULL;
     history_t *c = *history;
