@@ -29,6 +29,47 @@ static void destroy_double_node(history_t *node)
     free(tmp);
 }
 
+void destroy_history_node(int id, char *command, history_t **history)
+{
+    history_t *node = *history;
+
+    while (*history != NULL && my_strcmp(node->command, command) == 0 &&
+    node->id != id) {
+        *history = node->next;
+        free(node->command);
+        free(node->ctime);
+        free(node);
+        node = *history;
+    }
+    if (*history == NULL)
+        return;
+    while (node->next != NULL) {
+        if (my_strcmp(node->next->command, command) == 0 && node->next->id
+        != id) {
+            destroy_double_node(node);
+            continue;
+        }
+        node = node->next;
+    }
+}
+
+static void clear_history(history_t **history)
+{
+    int len = get_len_history(history);
+    history_t *tmp;
+
+    while (len > 100) {
+        tmp = *history;
+        if (tmp == NULL)
+            return;
+        *history = tmp->next;
+        free(tmp->command);
+        free(tmp->ctime);
+        free(tmp);
+        len--;
+    }
+}
+
 void add_history(history_t **history, char *command)
 {
     history_t *node = *history;
@@ -39,17 +80,12 @@ void add_history(history_t **history, char *command)
         *history = create_new_history_node(1, time_str, command, NULL);
         return;
     }
-    if (my_strcmp(node->command, command) == 0)
-        *history = node->next;
-    while (node->next != NULL) {
-        if (my_strcmp(node->next->command, command) == 0) {
-            destroy_double_node(node);
-            continue;
-        }
+    while (node->next != NULL)
         node = node->next;
-    }
     node->next = create_new_history_node(node->id + 1, time_str, command,
     NULL);
+    destroy_history_node(node->next->id, node->next->command, history);
+    clear_history(history);
 }
 
 int history(char **command_array, shell_t *shell)

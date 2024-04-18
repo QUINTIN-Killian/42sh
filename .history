@@ -1,7 +1,6 @@
-	23	10:06	cgbhj
-	25	10:06	ls
-	30	10:16	clear
-	32	10:16	historyy
-	33	10:16	history
-	34	10:16	rdfthgj
-	35	10:16	exit
+	10	13:44	echo toto
+	11	13:44	echo test
+	14	13:45	ls
+	16	13:45	clear
+	18	13:45	history
+	19	13:45	exit
