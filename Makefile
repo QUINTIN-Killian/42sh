@@ -8,38 +8,50 @@
 
 CC	=	gcc
 
-SRC	=	src/caller.c	\
-		src/command_separators.c	\
-		src/error_handling_command.c	\
+SRC	=	src/command_separators.c	\
+		src/error_handling_input.c	\
 		src/functions.c	\
-		src/interpreter.c	\
 		src/main.c	\
-		src/my_cd.c	\
-		src/my_env.c	\
+		src/builtin/my_cd.c	\
+		src/builtin/my_env.c	\
 		src/my_scanf.c	\
-		src/my_setenv.c	\
-		src/my_unsetenv.c \
-		src/right_redirections.c	\
-		src/shell.c
+		src/builtin/my_setenv.c	\
+		src/var_env.c	\
+		src/builtin/my_unsetenv.c \
+		src/shell.c	\
+		src/builtin/exit.c	\
+		src/builtin/history.c	\
+		src/builtin/history2.c	\
+		src/ast/ast.c	\
+		src/ast/ast_parse.c	\
+		src/ast/ast_execute.c	\
+		src/ast/exec_util.c	\
+		src/ast/operator_executor.c	\
+		src/ast/operator_executor2.c	\
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 
 CFLAGS	=	-g3 -W -Wall
 
-LIB_NAME	=	libmy.a
-
 EXEC	=	42sh
+
+H_NAME	=	include/my.h	\
+			include/mysh.h
+
+LIB_NAME	=	libmy.a
 
 all:	compile_lib $(EXEC)
 
 compile_lib:
 	make -C lib/my
 
-$(EXEC):	$(LIB_NAME) $(OBJ)
+$(EXEC):	$(H_NAME) $(LIB_NAME) $(OBJ)
 	$(CC) -o $(EXEC) $(OBJ) -L. -lmy $(CFLAGS)
 
-bin/%.o:	src/%.c
+bin/%.o:	src/%.c $(H_NAME) $(LIB_NAME)
 	@mkdir -p bin
+	@mkdir -p bin/ast
+	@mkdir -p bin/builtin
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 clean:

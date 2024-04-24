@@ -19,7 +19,7 @@ char **realloc_tab_plus_one(char **tab)
     return ans;
 }
 
-static bool is_pipe(shell_t *shell, char *command, int i)
+static int is_pipe(shell_t *shell, char *command, int i)
 {
     char **new_tab;
 
@@ -29,12 +29,12 @@ static bool is_pipe(shell_t *shell, char *command, int i)
         free_word_array(shell->separators);
         shell->separators = my_tabdup(new_tab);
         free_word_array(new_tab);
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
-static bool is_right_redirection(shell_t *shell, char *command, int i)
+static int is_right_redirection(shell_t *shell, char *command, int i)
 {
     char **new_tab;
 
@@ -45,7 +45,7 @@ static bool is_right_redirection(shell_t *shell, char *command, int i)
         free_word_array(shell->separators);
         shell->separators = my_tabdup(new_tab);
         free_word_array(new_tab);
-        return true;
+        return 1;
     }
     if (command[i] == '>') {
         new_tab = realloc_tab_plus_one(shell->separators);
@@ -53,12 +53,12 @@ static bool is_right_redirection(shell_t *shell, char *command, int i)
         free_word_array(shell->separators);
         shell->separators = my_tabdup(new_tab);
         free_word_array(new_tab);
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
-static bool is_left_redirection(shell_t *shell, char *command, int i)
+static int is_left_redirection(shell_t *shell, char *command, int i)
 {
     char **new_tab;
 
@@ -69,7 +69,7 @@ static bool is_left_redirection(shell_t *shell, char *command, int i)
         free_word_array(shell->separators);
         shell->separators = my_tabdup(new_tab);
         free_word_array(new_tab);
-        return true;
+        return 1;
     }
     if (command[i] == '<') {
         new_tab = realloc_tab_plus_one(shell->separators);
@@ -77,9 +77,9 @@ static bool is_left_redirection(shell_t *shell, char *command, int i)
         free_word_array(shell->separators);
         shell->separators = my_tabdup(new_tab);
         free_word_array(new_tab);
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
 void get_command_separators(shell_t *shell, char *command)

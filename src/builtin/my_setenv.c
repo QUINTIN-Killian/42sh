@@ -6,7 +6,7 @@
 ** my_setenv
 */
 
-#include "../include/mysh.h"
+#include "../../include/mysh.h"
 
 static int error_handling_key_setenv(shell_t *shell, char *key)
 {
@@ -76,5 +76,5 @@ int my_setenv(char **command_array, shell_t *shell)
     }
     free(env);
     shell->last_return = 0;
-    return 0;
+    return 1;
 }

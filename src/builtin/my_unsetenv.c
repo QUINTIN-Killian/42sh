@@ -6,7 +6,7 @@
 ** my_unsetenv
 */
 
-#include "../include/mysh.h"
+#include "../../include/mysh.h"
 
 int my_unsetenv(char **command_array, shell_t *shell)
 {
@@ -17,5 +17,5 @@ int my_unsetenv(char **command_array, shell_t *shell)
     for (int i = 1; i < my_strlen_array(command_array); i++)
         del_env(shell, command_array[i]);
     shell->last_return = 0;
-    return 0;
+    return 1;
 }

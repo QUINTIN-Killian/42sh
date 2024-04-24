@@ -1,0 +1,6 @@
+	10	13:44	echo toto
+	11	13:44	echo test
+	14	13:45	ls
+	16	13:45	clear
+	18	13:45	history
+	19	13:45	exit
