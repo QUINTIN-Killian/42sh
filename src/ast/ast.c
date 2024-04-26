@@ -49,6 +49,12 @@ static void put_node_value(ast_node_t *node)
         case REDIRECTION_LEFT:
             my_putstr("<");
             break;
+        case AND_OP:
+            my_putstr("&&");
+            break;
+        case OR_OP:
+            my_putstr("||");
+            break;
         default:
             my_putstr(node->value);
     }
@@ -72,10 +78,13 @@ ast_node_t *build_ast(char *input)
     ast_node_t *root = create_ast_node(COMMAND, my_strdup(input));
 
     ast_parse(root, ";");
+    ast_parse(root, "&&");
+    ast_parse(root, "||");
     ast_parse(root, "|");
     ast_parse(root, ">>");
     ast_parse(root, "<<");
     ast_parse(root, ">");
     ast_parse(root, "<");
+    print_ast_tree(root, 0);
     return root;
 }

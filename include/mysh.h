@@ -48,7 +48,9 @@ typedef enum {
     REDIRECTION_RIGTH,
     REDIRECTION_LEFT,
     DOUBLE_LEFT,
-    DOUBLE_RIGHT
+    DOUBLE_RIGHT,
+    AND_OP,
+    OR_OP
 } TokenType_t;
 
 typedef struct ast_node_s {

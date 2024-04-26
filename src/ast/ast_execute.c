@@ -53,6 +53,29 @@ static int execute_ast_pipe(ast_node_t *node, shell_t *shell)
     return rv;
 }
 
+static int execute_and_operator(ast_node_t *node, shell_t *shell)
+{
+    int rv = 0;
+
+    if (node->left != NULL)
+        rv = execute_ast_node(node->left, shell);
+    if (shell->last_return == 0 && node->right != NULL)
+        rv = execute_ast_node(node->right, shell);
+    return rv;
+}
+
+static int execute_or_operator(ast_node_t *node, shell_t *shell)
+{
+    int rv = 0;
+
+    if (node->left != NULL)
+        rv = execute_ast_node(node->left, shell);
+    if (shell->last_return != 0 && node->right != NULL)
+        rv = execute_ast_node(node->right, shell);
+    return rv;
+}
+
+
 int is_builtin(char **args, shell_t *shell)
 {
     if (args == NULL)
@@ -81,6 +104,10 @@ int execute_ast_node(ast_node_t *node, shell_t *shell)
             return execute_append(node, shell);
         case DOUBLE_LEFT:
             return execute_input_here(node, shell);
+        case AND_OP:
+            return execute_and_operator(node, shell);
+        case  OR_OP:
+            return execute_or_operator(node, shell);
         default:
             return execute_ast_semicolon(node, shell);
     }
