@@ -79,7 +79,7 @@ int execute_append(ast_node_t *node, shell_t *shell)
     int pid;
 
     if (fd == -1)
-        return print_execve_error(args[0], "Permission  denied.\n", args);
+        return print_execve_error(args[0], "Permission denied.\n", args);
     if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
