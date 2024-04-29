@@ -15,6 +15,7 @@ int execute_normal(ast_node_t *node, shell_t *shell)
     int pid;
     char **args = sep_str(node->value, 2, " ", "\t");
 
+    replace_aliases(&args, shell);
     if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;

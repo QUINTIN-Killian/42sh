@@ -19,9 +19,12 @@ SRC	=	src/command_separators.c	\
 		src/var_env.c	\
 		src/builtin/my_unsetenv.c \
 		src/shell.c	\
+		src/alias.c	\
 		src/builtin/exit.c	\
 		src/builtin/history.c	\
 		src/builtin/history2.c	\
+		src/builtin/my_alias.c	\
+		src/builtin/my_unalias.c	\
 		src/ast/ast.c	\
 		src/ast/ast_parse.c	\
 		src/ast/ast_execute.c	\
@@ -57,6 +60,7 @@ bin/%.o:	src/%.c $(H_NAME) $(LIB_NAME)
 clean:
 	rm -f $(OBJ)
 	@rm -rf bin
+	rm -f vgcore*
 	make clean -C lib/my
 
 fclean:	clean

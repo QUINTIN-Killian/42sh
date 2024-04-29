@@ -1,6 +1,18 @@
 	10	13:44	echo toto
 	11	13:44	echo test
-	14	13:45	ls
 	16	13:45	clear
 	18	13:45	history
-	19	13:45	exit
+	21	15:13	setenv ok
+	22	15:13	env
+	52	15:44	alias c ls -l
+	61	15:46	alias c
+	73	16:01	alias c k
+	75	16:01	alias c clear
+	77	16:01	unalias c
+	78	16:01	c
+	80	16:05	alias ls ls -l
+	84	16:05	alias ls ls
+	85	16:05	ls
+	86	16:05	ls include
+	87	16:05	alias
+	88	16:06	exit
