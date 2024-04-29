@@ -140,7 +140,6 @@ int execute_pipe(ast_node_t *node, shell_t *shell);
 
 int is_builtin(char **args, shell_t *shell);
 void my_exec(char **args, shell_t *shell);
-int is_builtin_exp(char **args, shell_t *shell);
 
 //builtins
 typedef struct builtin_s {

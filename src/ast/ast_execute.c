@@ -16,6 +16,8 @@ const builtin_t builtin[] = {
     {"setenv", my_setenv},
     {"unsetenv", my_unsetenv},
     {"history", history},
+    {"cd", my_cd},
+    {"exit", my_exit},
     {NULL, NULL}
 };
 

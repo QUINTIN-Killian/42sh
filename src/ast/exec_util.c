@@ -14,12 +14,3 @@ int print_execve_error(char *command, char *error, char **args)
     free_word_array(args);
     return BUILTIN_ERROR;
 }
-
-int is_builtin_exp(char **args, shell_t *shell)
-{
-    if (my_strcmp(args[0], "exit") == 0)
-        return my_exit(args, shell);
-    if (my_strcmp(args[0], "cd") == 0)
-        return my_cd(args, shell);
-    return 0;
-}
