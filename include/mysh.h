@@ -21,6 +21,8 @@
     #define BUILTIN_FINE (-2)
     #define BUILTIN_NO_F (-3)
 
+    #define ARR_SIZE(a) (int)(sizeof(a) / sizeof(a[0]))
+
 typedef struct env_s {
     char *env;
     struct env_s *next;
@@ -146,4 +148,8 @@ typedef struct builtin_s {
     char *name;
     int (*f)(char **, shell_t *);
 } builtin_t;
+
+//config
+void source_config(shell_t *shell);
+
 #endif
