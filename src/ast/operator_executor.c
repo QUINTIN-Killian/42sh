@@ -15,7 +15,7 @@ int execute_normal(ast_node_t *node, shell_t *shell)
     int pid;
     char **args = sep_str(node->value, 2, " ", "\t");
 
-    if (explore_var_env(args, shell) || is_builtin_exp(args, shell)) {
+    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -36,7 +36,7 @@ int execute_redirect(ast_node_t *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n", args);
-    if (explore_var_env(args, shell) || is_builtin_exp(args, shell)) {
+    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -56,7 +56,7 @@ int execute_pipe(ast_node_t *node, shell_t *shell)
     char **args = sep_str(node->value, 2, " ", "\t");
     int pid;
 
-    if (explore_var_env(args, shell) || is_builtin_exp(args, shell)) {
+    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -80,7 +80,7 @@ int execute_append(ast_node_t *node, shell_t *shell)
 
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n", args);
-    if (explore_var_env(args, shell) || is_builtin_exp(args, shell)) {
+    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
     }
@@ -104,7 +104,7 @@ int execute_input(ast_node_t *node, shell_t *shell)
     if (fd == -1)
         return print_execve_error(args[0],
             "No such file or directory.\n", args);
-    if (explore_var_env(args, shell) || is_builtin_exp(args, shell)) {
+    if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
     }
