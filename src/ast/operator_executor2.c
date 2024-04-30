@@ -80,6 +80,7 @@ int execute_input_here(ast_node_t *node, shell_t *shell)
     int pid;
     int res;
 
+    replace_aliases(&args, shell);
     res = must_exec(args, shell, fd);
     if (res != 1)
         return res;
