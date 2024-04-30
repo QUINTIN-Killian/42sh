@@ -99,7 +99,8 @@ int execute_append(ast_node_t *node, shell_t *shell)
     return pid;
 }
 
-static void execute_input_command(shell_t *shell, char **args, int *pid, int fd)
+static void execute_input_command(shell_t *shell, char **args,
+    int *pid, int fd)
 {
     *pid = fork();
     if (*pid == 0){
