@@ -55,6 +55,8 @@ static int execute_ast_pipe(ast_node_t *node, shell_t *shell)
 
 int is_builtin(char **args, shell_t *shell)
 {
+    if (args == NULL)
+        return 0;
     for (int i = 0; builtin[i].name != NULL; i++){
         if (my_strcmp(args[0], builtin[i].name) == 0)
             return builtin[i].f(args, shell);
