@@ -10,15 +10,11 @@
 
 static int continue_shell_interface_aux(shell_t *shell, char **input)
 {
-    char *tmp = my_strdup(get_history_id(&shell->history, *input));
-
-    if (tmp == NULL) {
+    if (reimplace_history_getter(shell, input)) {
         free(*input);
         shell->last_return = 1;
         return 1;
     }
-    free(*input);
-    *input = tmp;
     add_history(&shell->history, *input);
     if (error_handling_input(shell, *input)) {
         free(*input);

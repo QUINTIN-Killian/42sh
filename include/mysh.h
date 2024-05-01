@@ -93,6 +93,9 @@ void add_history(history_t **history, char *command);
 int history(char **command_array, shell_t *shell);
 char *get_history_id(history_t **history, char *input);
 
+//history_getter.c :
+int reimplace_history_getter(shell_t *shell, char **input);
+
 //my_cd.c :
 int my_cd(char **command_array, shell_t *shell);
 
