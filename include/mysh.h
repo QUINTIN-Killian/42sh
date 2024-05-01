@@ -33,6 +33,12 @@ typedef struct history_s {
     struct history_s *next;
 } history_t;
 
+typedef struct alias_s {
+    char *keyword;
+    char **replacement;
+    struct alias_s *next;
+} alias_t;
+
 typedef enum {
     COMMAND,
     PIPE,
@@ -61,6 +67,7 @@ typedef struct shell_s {
     int ind;
     int pipefd[2];
     ast_node_t *ast;
+    alias_t *alias;
 } shell_t;
 
 //my_scanf.c :
@@ -146,4 +153,12 @@ typedef struct builtin_s {
     char *name;
     int (*f)(char **, shell_t *);
 } builtin_t;
+
+//alias
+int my_alias(char **args, shell_t *shell);
+int my_unalias(char **args, shell_t *shell);
+void replace_aliases(char ***args, shell_t *shell);
+alias_t *find_alias(alias_t *node, char *to_find);
+void destroy_aliases(alias_t *alias);
+
 #endif

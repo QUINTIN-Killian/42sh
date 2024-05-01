@@ -4,12 +4,12 @@
 ** File description:
 ** execute
 */
+
 #include "../../include/mysh.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
 
 const builtin_t builtin[] = {
     {"env", my_env},
@@ -18,6 +18,8 @@ const builtin_t builtin[] = {
     {"history", history},
     {"cd", my_cd},
     {"exit", my_exit},
+    {"alias", my_alias},
+    {"unalias", my_unalias},
     {NULL, NULL}
 };
 
