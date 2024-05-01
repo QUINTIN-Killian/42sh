@@ -63,8 +63,6 @@ typedef struct shell_s {
     env_t *head;
     history_t *history;
     int last_return;
-    char **separators;
-    int ind;
     int pipefd[2];
     ast_node_t *ast;
     alias_t *alias;
@@ -103,10 +101,6 @@ int explore_var_env(char **command_array, shell_t *shell);
 char *get_env_value(shell_t *shell, char *key);
 char **convert_linked_list_in_word_array(shell_t *shell);
 int count_occ_motif(char *str, char *motif);
-
-//command_separators.c :
-char **realloc_tab_plus_one(char **tab);
-void get_command_separators(shell_t *shell, char *command);
 
 //error_handling_command.c :
 int error_handling_input(shell_t *shell, char *input);

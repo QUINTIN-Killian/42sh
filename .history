@@ -1,18 +1,28 @@
 	10	13:44	echo toto
 	11	13:44	echo test
-	16	13:45	clear
 	18	13:45	history
 	21	15:13	setenv ok
-	22	15:13	env
 	52	15:44	alias c ls -l
 	61	15:46	alias c
 	73	16:01	alias c k
-	75	16:01	alias c clear
 	77	16:01	unalias c
-	78	16:01	c
 	80	16:05	alias ls ls -l
 	84	16:05	alias ls ls
-	85	16:05	ls
 	86	16:05	ls include
 	87	16:05	alias
-	88	16:06	exit
+	89	13:24	setenv 2aaa
+	94	13:24	env 222
+	95	13:25	env ttt
+	96	13:25	env t2
+	97	13:25	env src
+	98	13:25	exit 2z
+	101	13:27	ls
+	105	13:28	alias c clear
+	106	13:28	c
+	116	13:39	setenv KIKITO AZERTYUIOP
+	120	13:39	unsetenv KIKI
+	123	13:40	unsetenv KIKITO
+	124	13:40	echo $?
+	126	13:40	clear
+	128	13:40	env
+	129	13:40	exit

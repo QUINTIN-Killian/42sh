@@ -101,16 +101,9 @@ int my_env(char **command_array, shell_t *shell)
         return 1;
     }
     node = shell->head;
-    if (shell->ind >= my_strlen_array(shell->separators)) {
-        while (node != NULL) {
-            mini_printf("%s\n", node->env);
-            node = node->next;
-        }
-    } else {
-        while (node != NULL) {
-            mini_fdprintf(2, "%s\n", node->env);
-            node = node->next;
-        }
+    while (node != NULL) {
+        mini_printf("%s\n", node->env);
+        node = node->next;
     }
     shell->last_return = 0;
     return 1;
