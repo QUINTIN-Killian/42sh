@@ -8,14 +8,14 @@
 
 #include "../../include/mysh.h"
 
-static int error_handling_cd(shell_t *shell, char **command_array)
+static int error_handling_cd(char **command_array)
 {
     if (my_strlen_array(command_array) == 2 &&
     (my_strcmp(command_array[1], "-") == 0 ||
     my_strcmp(command_array[1], "~") == 0))
         return 0;
     if (my_strlen_array(command_array) > 2) {
-        mini_fdprintf(shell->pipefd[1], "cd: Too many arguments.\n");
+        mini_fdprintf(2, "cd: Too many arguments.\n");
         return 1;
     }
     return 0;
@@ -68,14 +68,13 @@ int cd_minus(shell_t *shell)
 
 static void my_cd_error(char **command_array, shell_t *shell)
 {
-    mini_fdprintf(shell->pipefd[1],
-    "%s: %s.\n", command_array[1], strerror(errno));
+    mini_fdprintf(2, "%s: %s.\n", command_array[1], strerror(errno));
     shell->last_return = 1;
 }
 
 static int my_cd_aux(char **command_array, shell_t *shell)
 {
-    if (error_handling_cd(shell, command_array)) {
+    if (error_handling_cd(command_array)) {
         shell->last_return = 1;
         return 1;
     }
