@@ -8,15 +8,10 @@
 
 #include "../include/mysh.h"
 
-static int continue_shell_interface(shell_t *shell, char **input)
+static int continue_shell_interface_aux(shell_t *shell, char **input)
 {
-    char *tmp;
+    char *tmp = my_strdup(get_history_id(&shell->history, *input));
 
-    if ((my_strlen(*input) == 1 && *input[0] == '\n')) {
-        free(*input);
-        return 1;
-    }
-    tmp = my_strdup(get_history_id(&shell->history, *input));
     if (tmp == NULL) {
         free(*input);
         shell->last_return = 1;
@@ -30,6 +25,23 @@ static int continue_shell_interface(shell_t *shell, char **input)
         return 1;
     }
     return 0;
+}
+
+static int continue_shell_interface(shell_t *shell, char **input)
+{
+    char **tab;
+
+    if ((my_strlen(*input) == 1 && *input[0] == '\n')) {
+        free(*input);
+        return 1;
+    }
+    tab = sep_str(*input, 2, " ", "\t");
+    if (tab == NULL) {
+        free(*input);
+        return 1;
+    }
+    free_word_array(tab);
+    return continue_shell_interface_aux(shell, input);
 }
 
 int shell_interface(shell_t *shell)
