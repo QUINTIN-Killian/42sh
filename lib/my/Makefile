@@ -8,31 +8,31 @@
 
 CC	=	gcc
 
-SRC	=	concat_2_str.c  \
-		concat_str.c    \
-		convert_int_to_str.c    \
-		convert_str_in_int.c    \
-		free_word_array.c   \
-		mini_fdprintf.c \
-		mini_printf.c   \
-		my_compute_power_rec.c  \
-		my_fdputchar.c  \
-		my_fdput_nbr.c  \
-		my_fdputstr.c   \
-		my_intlen.c \
-		my_putchar.c    \
-		my_put_nbr.c    \
-		my_putstr.c \
-		my_strcmp.c \
-		my_strdup.c \
-		my_str_isnum.c  \
-		my_strlen_array.c   \
-		my_strlen.c \
-		my_strncmp.c    \
-		my_strndup.c    \
-		my_tabdup.c \
-		parse_str.c \
-		print_word_array.c  \
+SRC	=	concat_2_str.c	\
+		concat_str.c	\
+		convert_int_to_str.c	\
+		convert_str_in_int.c	\
+		free_word_array.c	\
+		mini_fdprintf.c	\
+		mini_printf.c	\
+		my_compute_power_rec.c	\
+		my_fdputchar.c	\
+		my_fdput_nbr.c	\
+		my_fdputstr.c	\
+		my_intlen.c	\
+		my_putchar.c	\
+		my_put_nbr.c	\
+		my_putstr.c	\
+		my_strcmp.c	\
+		my_strdup.c	\
+		my_str_isnum.c	\
+		my_strlen_array.c	\
+		my_strlen.c	\
+		my_strncmp.c	\
+		my_strndup.c	\
+		my_tabdup.c	\
+		parse_str.c	\
+		print_word_array.c	\
 		sep_str.c
 
 OBJ	=	$(SRC:%.c=bin/%.o)

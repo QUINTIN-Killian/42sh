@@ -35,6 +35,8 @@ OBJ	=	$(SRC:src/%.c=bin/%.o)
 
 CFLAGS	=	-g3 -W -Wall
 
+LDFLAGS	=	-L. -lmy
+
 EXEC	=	42sh
 
 H_NAME	=	include/my.h	\
@@ -48,7 +50,7 @@ compile_lib:
 	make -C lib/my
 
 $(EXEC):	$(H_NAME) $(LIB_NAME) $(OBJ)
-	$(CC) -o $(EXEC) $(OBJ) -L. -lmy $(CFLAGS)
+	$(CC) -o $(EXEC) $(OBJ) $(LDFLAGS)
 
 bin/%.o:	src/%.c $(H_NAME) $(LIB_NAME)
 	@mkdir -p bin
