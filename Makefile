@@ -8,8 +8,7 @@
 
 CC	=	gcc
 
-SRC	=	src/command_separators.c	\
-		src/error_handling_input.c	\
+SRC	=	src/error_handling_input.c	\
 		src/functions.c	\
 		src/main.c	\
 		src/builtin/my_cd.c	\
