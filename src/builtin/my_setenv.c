@@ -8,18 +8,17 @@
 
 #include "../../include/mysh.h"
 
-static int error_handling_key_setenv(shell_t *shell, char *key)
+static int error_handling_key_setenv(char *key)
 {
     if ((key[0] < 'A' || (key[0] > 'Z' && key[0] < 'a') || key[0] > 'z') &&
     key[0] != '_') {
-        mini_fdprintf(shell->pipefd[1],
-        "setenv: Variable name must begin with a letter.\n");
+        mini_fdprintf(2, "setenv: Variable name must begin with a letter.\n");
         return 1;
     }
     for (int i = 0; i < my_strlen(key); i++) {
         if ((key[i] < '0' || (key[i] > '9' && key[i] < 'A') ||
         (key[i] > 'Z' && key[i] < 'a') || key[i] > 'z') && key[i] != '_') {
-            mini_fdprintf(shell->pipefd[1],
+            mini_fdprintf(2,
             "setenv: Variable name must contain alphanumeric characters.\n");
             return 1;
         }
@@ -36,10 +35,10 @@ static char *error_handling_setenv(char **command_array, shell_t *shell)
         return NULL;
     }
     if (my_strlen_array(command_array) == 2 &&
-    !error_handling_key_setenv(shell, command_array[1]))
+    !error_handling_key_setenv(command_array[1]))
         return concat_2_str(command_array[1], "=");
     if (my_strlen_array(command_array) == 3 &&
-    !error_handling_key_setenv(shell, command_array[1]))
+    !error_handling_key_setenv(command_array[1]))
         return concat_str(3, command_array[1], "=", command_array[2]);
     shell->last_return = 1;
     return NULL;
