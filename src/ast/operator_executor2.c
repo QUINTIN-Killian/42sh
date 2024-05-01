@@ -37,7 +37,7 @@ void print_res(pid_t child, shell_t *shell)
 
 void my_exec(char **args, shell_t *shell)
 {
-    if (is_builtin(args, shell)){
+    if (is_builtin(args, shell) || args == NULL){
         exit(0);
         return;
     }
