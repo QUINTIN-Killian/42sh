@@ -21,6 +21,18 @@ bool is_file(char *path)
     return stat(path, &statbuf) == 0 ? true : false;
 }
 
+static void exec_line(shell_t *shell, char *file_path, char *line,
+    uint32_t nline)
+{
+    shell->ast = build_ast(line);
+    execute_ast_node(shell->ast, shell);
+    free_ast_node(shell->ast);
+    if (shell->last_return != 0) {
+        fprintf(stderr, "Error in config file '%s', line %u\n'",
+        file_path, nline);
+    }
+}
+
 static void execute_file(shell_t *shell, char *file_path)
 {
     FILE *file = fopen(file_path, "r");
@@ -30,13 +42,11 @@ static void execute_file(shell_t *shell, char *file_path)
 
     while (getline(&line, &_, file) != -1) {
         line[strlen(line) - 1] = '\0';
-        shell->ast = build_ast(line);
-        execute_ast_node(shell->ast, shell);
-        free_ast_node(shell->ast);
-        if (shell->last_return != 0) {
-            fprintf(stderr, "Error in config file '%s', line %u\n'",
-            file_path, nline);
+        if (strlen(line) == 0) {
+            nline++;
+            continue;
         }
+        exec_line(shell, file_path, line, nline);
         nline++;
     }
     free(line);
