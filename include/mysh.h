@@ -21,6 +21,8 @@
     #define BUILTIN_FINE (-2)
     #define BUILTIN_NO_F (-3)
 
+    #define ARR_SIZE(a) (int)(sizeof(a) / sizeof(a[0]))
+
 typedef struct env_s {
     char *env;
     struct env_s *next;
@@ -154,5 +156,7 @@ int my_unalias(char **args, shell_t *shell);
 void replace_aliases(char ***args, shell_t *shell);
 alias_t *find_alias(alias_t *node, char *to_find);
 void destroy_aliases(alias_t *alias);
+//config
+void source_config(shell_t *shell);
 
 #endif

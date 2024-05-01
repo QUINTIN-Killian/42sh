@@ -24,7 +24,7 @@ void replace_aliases(char ***args, shell_t *shell)
     char **new_args;
     uint32_t i;
 
-    if (args == NULL)
+    if (*args == NULL)
         return;
     alias = find_alias(shell->alias, *args[0]);
     if (alias == NULL)

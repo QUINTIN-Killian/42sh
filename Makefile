@@ -16,6 +16,7 @@ SRC	=	src/error_handling_input.c	\
 		src/my_scanf.c	\
 		src/builtin/my_setenv.c	\
 		src/var_env.c	\
+		src/config.c	\
 		src/builtin/my_unsetenv.c \
 		src/shell.c	\
 		src/alias.c	\
