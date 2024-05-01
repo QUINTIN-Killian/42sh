@@ -23,6 +23,7 @@ SRC	=	src/error_handling_input.c	\
 		src/builtin/exit.c	\
 		src/builtin/history.c	\
 		src/builtin/history2.c	\
+		src/builtin/history_getter.c	\
 		src/builtin/my_alias.c	\
 		src/builtin/my_unalias.c	\
 		src/ast/ast.c	\
