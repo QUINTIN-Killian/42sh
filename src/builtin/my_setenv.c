@@ -12,14 +12,13 @@ static int error_handling_key_setenv(shell_t *shell, char *key)
 {
     if ((key[0] < 'A' || (key[0] > 'Z' && key[0] < 'a') || key[0] > 'z') &&
     key[0] != '_') {
-        mini_fdprintf(shell->pipefd[1],
-        "setenv: Variable name must begin with a letter.\n");
+        mini_fdprintf(2, "setenv: Variable name must begin with a letter.\n");
         return 1;
     }
     for (int i = 0; i < my_strlen(key); i++) {
         if ((key[i] < '0' || (key[i] > '9' && key[i] < 'A') ||
         (key[i] > 'Z' && key[i] < 'a') || key[i] > 'z') && key[i] != '_') {
-            mini_fdprintf(shell->pipefd[1],
+            mini_fdprintf(2,
             "setenv: Variable name must contain alphanumeric characters.\n");
             return 1;
         }

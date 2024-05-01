@@ -15,7 +15,7 @@ static int error_handling_cd(shell_t *shell, char **command_array)
     my_strcmp(command_array[1], "~") == 0))
         return 0;
     if (my_strlen_array(command_array) > 2) {
-        mini_fdprintf(shell->pipefd[1], "cd: Too many arguments.\n");
+        mini_fdprintf(2, "cd: Too many arguments.\n");
         return 1;
     }
     return 0;
@@ -68,8 +68,7 @@ int cd_minus(shell_t *shell)
 
 static void my_cd_error(char **command_array, shell_t *shell)
 {
-    mini_fdprintf(shell->pipefd[1],
-    "%s: %s.\n", command_array[1], strerror(errno));
+    mini_fdprintf(2, "%s: %s.\n", command_array[1], strerror(errno));
     shell->last_return = 1;
 }
 
