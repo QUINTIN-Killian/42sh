@@ -64,7 +64,7 @@ static int reimplace_history_getter_aux(shell_t *shell, char **input, int *i,
         if (reimplace == NULL)
             return 1;
         set_new_input(input, &reimplace, *i, ind);
-        *i -= 1;
+        *i = ind - 1;
     }
     return 0;
 }
