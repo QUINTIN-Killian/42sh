@@ -8,7 +8,7 @@
 
 #include "../../include/mysh.h"
 
-static int error_handling_cd(shell_t *shell, char **command_array)
+static int error_handling_cd(char **command_array)
 {
     if (my_strlen_array(command_array) == 2 &&
     (my_strcmp(command_array[1], "-") == 0 ||
@@ -74,7 +74,7 @@ static void my_cd_error(char **command_array, shell_t *shell)
 
 static int my_cd_aux(char **command_array, shell_t *shell)
 {
-    if (error_handling_cd(shell, command_array)) {
+    if (error_handling_cd(command_array)) {
         shell->last_return = 1;
         return 1;
     }

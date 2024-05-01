@@ -58,7 +58,7 @@ int del_env(shell_t *shell, char *key)
     return 1;
 }
 
-static int error_handling_env_aux(shell_t *shell, char **command_array,
+static int error_handling_env_aux(char **command_array,
     int ret, struct stat *st)
 {
     if (ret != -1 && command_array[1][my_strlen(command_array[1]) - 1] == '/'){
@@ -71,7 +71,7 @@ static int error_handling_env_aux(shell_t *shell, char **command_array,
     return -1;
 }
 
-static int error_handling_env(shell_t *shell, char **command_array)
+static int error_handling_env(char **command_array)
 {
     struct stat st;
     int ret;
@@ -89,7 +89,7 @@ static int error_handling_env(shell_t *shell, char **command_array)
         else
             return 127;
     }
-    return error_handling_env_aux(shell, command_array, ret, &st);
+    return error_handling_env_aux(command_array, ret, &st);
 }
 
 int my_env(char **command_array, shell_t *shell)
@@ -97,7 +97,7 @@ int my_env(char **command_array, shell_t *shell)
     env_t *node;
 
     if (my_strlen_array(command_array) != 1) {
-        shell->last_return = error_handling_env(shell, command_array);
+        shell->last_return = error_handling_env(command_array);
         return 1;
     }
     node = shell->head;
