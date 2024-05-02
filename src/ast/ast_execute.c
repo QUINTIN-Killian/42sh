@@ -11,7 +11,7 @@
 #include <string.h>
 #include <unistd.h>
 
-static int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
+int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
 
@@ -22,7 +22,7 @@ static int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
     return rv;
 }
 
-static int execute_ast_pipe(ast_node_t *node, shell_t *shell)
+int execute_ast_pipe(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
     int fdtmp = dup(0);
@@ -41,7 +41,7 @@ static int execute_ast_pipe(ast_node_t *node, shell_t *shell)
     return rv;
 }
 
-static int execute_and_operator(ast_node_t *node, shell_t *shell)
+int execute_and_operator(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
 
@@ -52,7 +52,7 @@ static int execute_and_operator(ast_node_t *node, shell_t *shell)
     return rv;
 }
 
-static int execute_or_operator(ast_node_t *node, shell_t *shell)
+int execute_or_operator(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
 
@@ -61,30 +61,4 @@ static int execute_or_operator(ast_node_t *node, shell_t *shell)
     if (shell->last_return != 0 && node->right != NULL)
         rv = execute_ast_node(node->right, shell);
     return rv;
-}
-
-int execute_ast_node(ast_node_t *node, shell_t *shell)
-{
-    switch (node->type) {
-        case PIPE:
-            return execute_ast_pipe(node, shell);
-        case SEMICOLON:
-            return execute_ast_semicolon(node, shell);
-        case COMMAND:
-            return execute_normal(node, shell);
-        case REDIRECTION_RIGTH:
-            return execute_redirect(node, shell);
-        case REDIRECTION_LEFT:
-            return execute_input(node, shell);
-        case DOUBLE_RIGHT:
-            return execute_append(node, shell);
-        case DOUBLE_LEFT:
-            return execute_input_here(node, shell);
-        case AND_OP:
-            return execute_and_operator(node, shell);
-        case OR_OP:
-            return execute_or_operator(node, shell);
-        default:
-            return execute_ast_semicolon(node, shell);
-    }
 }

@@ -42,6 +42,7 @@ typedef struct alias_s {
 } alias_t;
 
 typedef enum {
+    NONE = 0,
     COMMAND,
     PIPE,
     SEMICOLON,
@@ -170,5 +171,10 @@ typedef struct operation_t {
     TokenType_t op;
     int (*f)(ast_node_t *, shell_t *);
 } operation_t;
+
+int execute_ast_semicolon(ast_node_t *node, shell_t *shell);
+int execute_ast_pipe(ast_node_t *node, shell_t *shell);
+int execute_and_operator(ast_node_t *node, shell_t *shell);
+int execute_or_operator(ast_node_t *node, shell_t *shell);
 
 #endif
