@@ -42,6 +42,8 @@ char *concat_str(int nb_elt, ...)
     va_start(args, nb_elt);
     for (int i = 0; i < nb_elt; i++) {
         str_temp = va_arg(args, char *);
+        if (str_temp == NULL)
+            continue;
         ans = add_in_str(ans, str_temp, &ind);
     }
     va_end(args);
