@@ -56,7 +56,6 @@ static int print_error(char **tmp, char **sep, int i, int occ)
 //     free_word_array(tmp);
 //     return 0;
 // }
-
 static int analyse_command(char *command, char **sep)
 {
     int occ;

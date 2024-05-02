@@ -11,18 +11,6 @@
 #include <string.h>
 #include <unistd.h>
 
-const builtin_t builtin[] = {
-    {"env", my_env},
-    {"setenv", my_setenv},
-    {"unsetenv", my_unsetenv},
-    {"history", history},
-    {"cd", my_cd},
-    {"exit", my_exit},
-    {"alias", my_alias},
-    {"unalias", my_unalias},
-    {NULL, NULL}
-};
-
 static int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
@@ -73,18 +61,6 @@ static int execute_or_operator(ast_node_t *node, shell_t *shell)
     if (shell->last_return != 0 && node->right != NULL)
         rv = execute_ast_node(node->right, shell);
     return rv;
-}
-
-
-int is_builtin(char **args, shell_t *shell)
-{
-    if (args == NULL)
-        return 0;
-    for (int i = 0; builtin[i].name != NULL; i++){
-        if (my_strcmp(args[0], builtin[i].name) == 0)
-            return builtin[i].f(args, shell);
-    }
-    return 0;
 }
 
 int execute_ast_node(ast_node_t *node, shell_t *shell)

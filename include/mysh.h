@@ -72,6 +72,8 @@ typedef struct shell_s {
     alias_t *alias;
 } shell_t;
 
+
+
 //my_scanf.c :
 char *my_scanf(void);
 
@@ -163,5 +165,10 @@ alias_t *find_alias(alias_t *node, char *to_find);
 void destroy_aliases(alias_t *alias);
 //config
 void source_config(shell_t *shell);
+
+typedef struct operation_t {
+    TokenType_t op;
+    int (*f)(ast_node_t *, shell_t *);
+} operation_t;
 
 #endif
