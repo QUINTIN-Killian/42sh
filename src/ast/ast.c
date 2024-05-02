@@ -32,6 +32,22 @@ void free_ast_node(ast_node_t *node)
         free_ast_node(node->right);
     free(node);
 }
+
+ast_node_t *build_ast(char *input)
+{
+    ast_node_t *root = create_ast_node(COMMAND, my_strdup(input));
+
+    ast_parse(root, ";");
+    ast_parse(root, "&&");
+    ast_parse(root, "||");
+    ast_parse(root, "|");
+    ast_parse(root, ">>");
+    ast_parse(root, "<<");
+    ast_parse(root, ">");
+    ast_parse(root, "<");
+    return root;
+}
+
 // static void put_node_value(ast_node_t *node)
 // {
 //     my_putstr("|-- ");
@@ -59,6 +75,7 @@ void free_ast_node(ast_node_t *node)
 //     }
 //     my_putstr("\n");
 // }
+
 // static void print_ast_tree(ast_node_t *node, int level)
 // {
 //     if (node == NULL)
@@ -70,17 +87,3 @@ void free_ast_node(ast_node_t *node)
 //     put_node_value(node);
 //     print_ast_tree(node->left, level + 1);
 // }
-ast_node_t *build_ast(char *input)
-{
-    ast_node_t *root = create_ast_node(COMMAND, my_strdup(input));
-
-    ast_parse(root, ";");
-    ast_parse(root, "&&");
-    ast_parse(root, "||");
-    ast_parse(root, "|");
-    ast_parse(root, ">>");
-    ast_parse(root, "<<");
-    ast_parse(root, ">");
-    ast_parse(root, "<");
-    return root;
-}
