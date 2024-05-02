@@ -27,7 +27,6 @@
 	161	22:07	echo $?
 	177	22:52	c ; history ; history
 	178	22:53	c ; history ; history ; echo TEST
-	181	22:53	ls
 	184	22:54	alias c clear
 	185	22:54	c
 	188	22:54	history
@@ -37,3 +36,17 @@
 	193	22:55	!!!
 	194	22:55	!-
 	195	22:55	exit
+	197	15:12	ls && ls
+	198	15:13	enzifn && ls
+	201	15:14	lezf || ls
+	202	15:16	ls ||
+	203	15:16	||
+	204	15:17	|
+	205	15:17	ls | ls
+	206	15:17	ndvn || ls
+	207	15:17	m
+	209	15:18	ls
+	210	15:20	ls 
+	212	15:22	make
+	227	15:34	ls || ls
+	228	15:34	sbsdubsjh || ls

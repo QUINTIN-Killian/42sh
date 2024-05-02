@@ -85,6 +85,5 @@ ast_node_t *build_ast(char *input)
     ast_parse(root, "<<");
     ast_parse(root, ">");
     ast_parse(root, "<");
-    print_ast_tree(root, 0);
     return root;
 }

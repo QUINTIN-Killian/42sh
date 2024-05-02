@@ -106,7 +106,7 @@ int execute_ast_node(ast_node_t *node, shell_t *shell)
             return execute_input_here(node, shell);
         case AND_OP:
             return execute_and_operator(node, shell);
-        case  OR_OP:
+        case OR_OP:
             return execute_or_operator(node, shell);
         default:
             return execute_ast_semicolon(node, shell);
