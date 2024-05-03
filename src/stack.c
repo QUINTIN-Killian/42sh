@@ -29,6 +29,7 @@ void add_in_stack(my_stack_t **stack, char *value)
         *stack = new_stack;
         return;
     }
+    add_in_stack(&(*stack)->next, value);
 }
 
 bool is_in_stack(my_stack_t *stack, char *to_find)
