@@ -17,7 +17,7 @@ void print_res(pid_t child, shell_t *shell)
 {
     int status;
 
-    waitpid(child, &status, 0);
+    waitpid(child, &status, WUNTRACED);
     if (WIFEXITED(status)) {
         shell->last_return = WEXITSTATUS(status);
         return;

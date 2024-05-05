@@ -64,7 +64,6 @@ int handle_aliases(char ***args, shell_t *shell)
         free_word_array(*args);
         return 1;
     }
-    shell->last_return = 0;
     return 0;
 }
 
