@@ -10,12 +10,25 @@
 #include "../../include/mysh.h"
 #include "../../include/my.h"
 
+static void execute_simple_fork(int *pid, int fd, shell_t *shell, char **args)
+{
+    *pid = fork();
+    if (*pid == 0){
+        dup2(fd, 1);
+        close(fd);
+        my_exec(args, shell);
+    } else
+        print_res(*pid, shell);
+    free_word_array(args);
+}
+
 int execute_normal(ast_node_t *node, shell_t *shell)
 {
     int pid;
     char **args = sep_str(node->value, 2, " ", "\t");
 
-    replace_aliases(&args, shell);
+    if (handle_aliases(&args, shell) == 1)
+        return 1;
     if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
@@ -35,21 +48,15 @@ int execute_redirect(ast_node_t *node, shell_t *shell)
     char **args = sep_str(node->left->value, 2, " ", "\t");
     int pid;
 
-    replace_aliases(&args, shell);
+    if (handle_aliases(&args, shell) == 1)
+        return 1;
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n", args);
     if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
     }
-    pid = fork();
-    if (pid == 0){
-        dup2(fd, 1);
-        close(fd);
-        my_exec(args, shell);
-    } else
-        print_res(pid, shell);
-    free_word_array(args);
+    execute_simple_fork(&pid, fd, shell, args);
     return pid;
 }
 
@@ -58,7 +65,8 @@ int execute_pipe(ast_node_t *node, shell_t *shell)
     char **args = sep_str(node->value, 2, " ", "\t");
     int pid;
 
-    replace_aliases(&args, shell);
+    if (handle_aliases(&args, shell) == 1)
+        return 1;
     if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
@@ -81,21 +89,15 @@ int execute_append(ast_node_t *node, shell_t *shell)
     char **args = sep_str(node->left->value, 2, " ", "\t");
     int pid;
 
-    replace_aliases(&args, shell);
+    if (handle_aliases(&args, shell) == 1)
+        return 1;
     if (fd == -1)
         return print_execve_error(args[0], "Permission denied.\n", args);
     if (explore_var_env(args, shell) || is_builtin(args, shell)) {
         free_word_array(args);
         return 0;
     }
-    pid = fork();
-    if (pid == 0){
-        dup2(fd, 1);
-        close(fd);
-        my_exec(args, shell);
-    } else
-        print_res(pid, shell);
-    free_word_array(args);
+    execute_simple_fork(&pid, fd, shell, args);
     return pid;
 }
 
@@ -117,7 +119,8 @@ int execute_input(ast_node_t *node, shell_t *shell)
     char **args = sep_str(node->left->value, 2, " ", "\t");
     int pid;
 
-    replace_aliases(&args, shell);
+    if (handle_aliases(&args, shell) == 1)
+        return 1;
     if (fd == -1)
         return print_execve_error(args[0],
             "No such file or directory.\n", args);
