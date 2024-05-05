@@ -35,6 +35,17 @@ void print_res(pid_t child, shell_t *shell)
     }
 }
 
+static void exec_dir(char **args)
+{
+    DIR *dir = opendir(args[0]);
+
+    if (dir != NULL) {
+        mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        closedir(dir);
+        exit(1);
+    }
+}
+
 void my_exec(char **args, shell_t *shell)
 {
     if (is_builtin(args, shell) || args == NULL){
@@ -42,6 +53,7 @@ void my_exec(char **args, shell_t *shell)
         return;
     }
     if (execvp(args[0], args) == -1){
+        exec_dir(args);
         mini_fdprintf(2, "%s: Command not found.\n", args[0]);
         exit(1);
     }
