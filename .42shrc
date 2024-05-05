@@ -1,0 +1,9 @@
+alias c clear
+alias l ls -l
+alias la ls -a
+alias lr ls -R
+alias llr l -R
+alias ga git add
+alias gaa ga .
+alias gc git commit
+alias gp git push

@@ -16,6 +16,7 @@
     #include <errno.h>
     #include <dirent.h>
     #include <time.h>
+    #include <stdbool.h>
 
     #define BUILTIN_ERROR (-1)
     #define BUILTIN_FINE (-2)
@@ -34,6 +35,11 @@ typedef struct history_s {
     char *command;
     struct history_s *next;
 } history_t;
+
+typedef struct my_stack_s {
+    char *value;
+    struct my_stack_s *next;
+} my_stack_t;
 
 typedef struct alias_s {
     char *keyword;
@@ -153,12 +159,18 @@ typedef struct builtin_s {
     int (*f)(char **, shell_t *);
 } builtin_t;
 
+//stack
+void add_in_stack(my_stack_t **stack, char *value);
+void destroy_stack(my_stack_t *stack);
+bool is_in_stack(my_stack_t *stack, char *to_find);
+
 //alias
 int my_alias(char **args, shell_t *shell);
 int my_unalias(char **args, shell_t *shell);
-void replace_aliases(char ***args, shell_t *shell);
+int handle_aliases(char ***args, shell_t *shell);
 alias_t *find_alias(alias_t *node, char *to_find);
 void destroy_aliases(alias_t *alias);
+
 //config
 void source_config(shell_t *shell);
 
