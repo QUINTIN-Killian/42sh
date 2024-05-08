@@ -18,7 +18,6 @@
 	116	13:39	setenv KIKITO AZERTYUIOP
 	120	13:39	unsetenv KIKI
 	123	13:40	unsetenv KIKITO
-	128	13:40	env
 	132	21:16	clear
 	138	21:17	!137
 	141	21:59	histpry
@@ -27,9 +26,7 @@
 	161	22:07	echo $?
 	177	22:52	c ; history ; history
 	178	22:53	c ; history ; history ; echo TEST
-	181	22:53	ls
 	184	22:54	alias c clear
-	185	22:54	c
 	188	22:54	history
 	189	22:54	history ; history ; history
 	191	22:55	!
@@ -37,3 +34,19 @@
 	193	22:55	!!!
 	194	22:55	!-
 	195	22:55	exit
+	203	18:41	$?
+	207	18:54	firefox
+	211	19:16	$$$$$$$$
+	224	19:16	$$$$$$
+	231	19:18	$$
+	233	19:18	$$$$
+	241	19:18	$$$
+	244	19:18	$
+	245	19:19	env
+	258	19:26	cd $HOME/laurent
+	263	20:11	cd $HOME/delivery
+	268	20:11	cd -
+	270	20:11	c
+	271	20:28	$BROWSER
+	272	20:46	$qsd
+	273	20:46	ls

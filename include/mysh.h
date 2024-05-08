@@ -174,4 +174,12 @@ void destroy_aliases(alias_t *alias);
 //config
 void source_config(shell_t *shell);
 
+//variables
+char *replace_variables(shell_t *shell, char *input);
+
+//utility
+char *string_to_delims(char *input, char *delimiters);
+bool char_in_string(char c, char *string);
+char *concat(char *str1, char *str2);
+
 #endif

@@ -21,6 +21,8 @@ SRC	=	src/error_handling_input.c	\
 		src/shell.c	\
 		src/alias.c	\
 		src/stack.c	\
+		src/variables.c	\
+		src/utility.c	\
 		src/builtin/exit.c	\
 		src/builtin/history.c	\
 		src/builtin/history2.c	\
