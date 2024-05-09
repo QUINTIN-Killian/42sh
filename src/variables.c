@@ -16,8 +16,8 @@ static char *get_variable(shell_t *shell, char *input, int *i)
 
     if (token == NULL)
         return NULL;
-    // get local variable
-    var = get_env_value(shell, token);
+    var = get_variable_value(shell->variables, token);
+    var = var == NULL ? get_env_value(shell, token) : var;
     if (var == NULL)
         fprintf(stderr, "%s: Undefined variable.\n", token);
     *i += strlen(token);
@@ -30,7 +30,6 @@ static int handle_variables(char *var, char **new_input, int *index)
     char *temp = *new_input;
 
     if (var == NULL) {
-        free(var);
         free(*new_input);
         return 1;
     }

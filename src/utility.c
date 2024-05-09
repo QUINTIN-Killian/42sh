@@ -39,7 +39,8 @@ char *string_to_delims(char *input, char *delimiters)
     char *token;
     int size = 0;
 
-    for (; !char_in_string(input[size], delimiters) && input[size] != '\0'; size++);
+    for (; !char_in_string(input[size], delimiters) &&
+        input[size] != '\0'; size++);
     if (size == 0)
         return NULL;
     token = malloc(size + 1);
