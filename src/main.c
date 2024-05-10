@@ -25,6 +25,7 @@ static void init_shell_struct(shell_t *shell, int ac, char **av, char **env)
     shell->history = NULL;
     shell->history = get_history(&shell->history);
     shell->alias = NULL;
+    shell->variables = NULL;
 }
 
 static void destroy_shell_struct(shell_t *shell)
@@ -39,6 +40,7 @@ static void destroy_shell_struct(shell_t *shell)
     }
     destroy_history(&shell->history);
     destroy_aliases(shell->alias);
+    destroy_variables(shell->variables);
 }
 
 int main(int ac, char **av, char **env)

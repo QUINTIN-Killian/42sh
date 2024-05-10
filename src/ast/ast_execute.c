@@ -20,6 +20,8 @@ const builtin_t builtin[] = {
     {"exit", my_exit},
     {"alias", my_alias},
     {"unalias", my_unalias},
+    {"set", my_set},
+    {"unset", my_unset},
     {NULL, NULL}
 };
 
