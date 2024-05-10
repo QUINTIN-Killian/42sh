@@ -16,6 +16,7 @@
     #include <errno.h>
     #include <dirent.h>
     #include <time.h>
+    #include <stdbool.h>
 
     #define BUILTIN_ERROR (-1)
     #define BUILTIN_FINE (-2)
@@ -35,11 +36,22 @@ typedef struct history_s {
     struct history_s *next;
 } history_t;
 
+typedef struct my_stack_s {
+    char *value;
+    struct my_stack_s *next;
+} my_stack_t;
+
 typedef struct alias_s {
     char *keyword;
     char **replacement;
     struct alias_s *next;
 } alias_t;
+
+typedef struct variables_s {
+    char *name;
+    char *value;
+    struct variables_s *next;
+} variables_t;
 
 typedef enum {
     NONE = 0,
@@ -71,6 +83,7 @@ typedef struct shell_s {
     int pipefd[2];
     ast_node_t *ast;
     alias_t *alias;
+    variables_t *variables;
 } shell_t;
 
 
@@ -152,21 +165,6 @@ int execute_pipe(ast_node_t *node, shell_t *shell);
 int is_builtin(char **args, shell_t *shell);
 void my_exec(char **args, shell_t *shell);
 
-//builtins
-typedef struct builtin_s {
-    char *name;
-    int (*f)(char **, shell_t *);
-} builtin_t;
-
-//alias
-int my_alias(char **args, shell_t *shell);
-int my_unalias(char **args, shell_t *shell);
-void replace_aliases(char ***args, shell_t *shell);
-alias_t *find_alias(alias_t *node, char *to_find);
-void destroy_aliases(alias_t *alias);
-//config
-void source_config(shell_t *shell);
-
 typedef struct operation_t {
     TokenType_t op;
     int (*f)(ast_node_t *, shell_t *);
@@ -176,5 +174,41 @@ int execute_ast_semicolon(ast_node_t *node, shell_t *shell);
 int execute_ast_pipe(ast_node_t *node, shell_t *shell);
 int execute_and_operator(ast_node_t *node, shell_t *shell);
 int execute_or_operator(ast_node_t *node, shell_t *shell);
+
+//builtins
+typedef struct builtin_s {
+    char *name;
+    int (*f)(char **, shell_t *);
+} builtin_t;
+
+//stack
+void add_in_stack(my_stack_t **stack, char *value);
+void destroy_stack(my_stack_t *stack);
+bool is_in_stack(my_stack_t *stack, char *to_find);
+
+//alias
+int my_alias(char **args, shell_t *shell);
+int my_unalias(char **args, shell_t *shell);
+int handle_aliases(char ***args, shell_t *shell);
+alias_t *find_alias(alias_t *node, char *to_find);
+void destroy_aliases(alias_t *alias);
+
+//config
+void source_config(shell_t *shell);
+
+//variables
+char *replace_variables(shell_t *shell, char *input);
+
+//utility
+char *string_to_delims(char *input, char *delimiters);
+bool char_in_string(char c, char *string);
+char *concat(char *str1, char *str2);
+
+//my_set
+int my_set(char **args, shell_t *shell);
+int my_unset(char **args, shell_t *shell);
+char *get_variable_value(variables_t *node, char *name);
+variables_t *find_variable(variables_t *node, char *name);
+void destroy_variables(variables_t *node);
 
 #endif

@@ -17,7 +17,7 @@ void print_res(pid_t child, shell_t *shell)
 {
     int status;
 
-    waitpid(child, &status, 0);
+    waitpid(child, &status, WUNTRACED);
     if (WIFEXITED(status)) {
         shell->last_return = WEXITSTATUS(status);
         return;
@@ -35,6 +35,17 @@ void print_res(pid_t child, shell_t *shell)
     }
 }
 
+static void exec_dir(char **args)
+{
+    DIR *dir = opendir(args[0]);
+
+    if (dir != NULL) {
+        mini_fdprintf(2, "%s: Permission denied.\n", args[0]);
+        closedir(dir);
+        exit(1);
+    }
+}
+
 void my_exec(char **args, shell_t *shell)
 {
     if (is_builtin(args, shell) || args == NULL){
@@ -42,6 +53,7 @@ void my_exec(char **args, shell_t *shell)
         return;
     }
     if (execvp(args[0], args) == -1){
+        exec_dir(args);
         mini_fdprintf(2, "%s: Command not found.\n", args[0]);
         exit(1);
     }
@@ -80,7 +92,8 @@ int execute_input_here(ast_node_t *node, shell_t *shell)
     int pid;
     int res;
 
-    replace_aliases(&args, shell);
+    if (handle_aliases(&args, shell))
+        return 1;
     res = must_exec(args, shell, fd);
     if (res != 1)
         return res;

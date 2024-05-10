@@ -52,6 +52,9 @@ int shell_interface(shell_t *shell)
             return 1;
         if (continue_shell_interface(shell, &input))
             continue;
+        input = replace_variables(shell, input);
+        if (input == NULL)
+            continue;
         shell->ast = build_ast(input);
         execute_ast_node(shell->ast, shell);
         free_ast_node(shell->ast);

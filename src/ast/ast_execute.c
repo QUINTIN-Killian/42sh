@@ -11,6 +11,20 @@
 #include <string.h>
 #include <unistd.h>
 
+const builtin_t builtin[] = {
+    {"env", my_env},
+    {"setenv", my_setenv},
+    {"unsetenv", my_unsetenv},
+    {"history", history},
+    {"cd", my_cd},
+    {"exit", my_exit},
+    {"alias", my_alias},
+    {"unalias", my_unalias},
+    {"set", my_set},
+    {"unset", my_unset},
+    {NULL, NULL}
+};
+
 int execute_ast_semicolon(ast_node_t *node, shell_t *shell)
 {
     int rv = 0;
