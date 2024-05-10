@@ -33,45 +33,13 @@ void free_ast_node(ast_node_t *node)
     free(node);
 }
 
-static void put_node_value(ast_node_t *node)
-{
-    my_putstr("|-- ");
-    switch (node->type) {
-        case SEMICOLON:
-            my_putstr(";");
-            break;
-        case PIPE:
-            my_putstr("P");
-            break;
-        case REDIRECTION_RIGTH:
-            my_putstr(">");
-            break;
-        case REDIRECTION_LEFT:
-            my_putstr("<");
-            break;
-        default:
-            my_putstr(node->value);
-    }
-    my_putstr("\n");
-}
-
-static void print_ast_tree(ast_node_t *node, int level)
-{
-    if (node == NULL)
-        return;
-    print_ast_tree(node->right, level + 1);
-    for (int i = 0; i < level; i++) {
-        my_putstr("    ");
-    }
-    put_node_value(node);
-    print_ast_tree(node->left, level + 1);
-}
-
 ast_node_t *build_ast(char *input)
 {
     ast_node_t *root = create_ast_node(COMMAND, my_strdup(input));
 
     ast_parse(root, ";");
+    ast_parse(root, "&&");
+    ast_parse(root, "||");
     ast_parse(root, "|");
     ast_parse(root, ">>");
     ast_parse(root, "<<");
@@ -79,3 +47,43 @@ ast_node_t *build_ast(char *input)
     ast_parse(root, "<");
     return root;
 }
+
+// static void put_node_value(ast_node_t *node)
+// {
+//     my_putstr("|-- ");
+//     switch (node->type) {
+//         case SEMICOLON:
+//             my_putstr(";");
+//             break;
+//         case PIPE:
+//             my_putstr("P");
+//             break;
+//         case REDIRECTION_RIGTH:
+//             my_putstr(">");
+//             break;
+//         case REDIRECTION_LEFT:
+//             my_putstr("<");
+//             break;
+//         case AND_OP:
+//             my_putstr("&&");
+//             break;
+//         case OR_OP:
+//             my_putstr("||");
+//             break;
+//         default:
+//             my_putstr(node->value);
+//     }
+//     my_putstr("\n");
+// }
+
+// static void print_ast_tree(ast_node_t *node, int level)
+// {
+//     if (node == NULL)
+//         return;
+//     print_ast_tree(node->right, level + 1);
+//     for (int i = 0; i < level; i++) {
+//         my_putstr("    ");
+//     }
+//     put_node_value(node);
+//     print_ast_tree(node->left, level + 1);
+// }

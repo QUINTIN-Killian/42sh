@@ -47,8 +47,10 @@ static int pipe_error(char *command)
 {
     char **tmp = sep_str(command, 1, "|");
     int occ = count_occ_motif(command, "|");
+    int occ_or = count_occ_motif(command, "||");
 
-    if (space_checker(tmp) || occ >= my_strlen_array(tmp)) {
+    if (space_checker(tmp) || (occ >= my_strlen_array(tmp) && occ_or == 0) ||
+    (occ > my_strlen_array(tmp) && occ_or > 0)) {
         free_word_array(tmp);
         my_fdputstr(2, "Invalid null command.\n");
         return 1;

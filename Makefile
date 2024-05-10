@@ -37,6 +37,8 @@ SRC	=	src/error_handling_input.c	\
 		src/ast/exec_util.c	\
 		src/ast/operator_executor.c	\
 		src/ast/operator_executor2.c	\
+		src/ast/is_builtin.c	\
+		src/ast/ast_execute_node.c	\
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 
