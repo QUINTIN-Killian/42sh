@@ -43,19 +43,22 @@ static int print_error(char **tmp, char **sep, int i, int occ)
     return 0;
 }
 
-// static int pipe_error(char *command)
-// {
-//     char **tmp = sep_str(command, 1, "|");
-//     int occ = count_occ_motif(command, "|");
+static int pipe_error(char *command)
+{
+    char **tmp = sep_str(command, 1, "|");
+    int occ = count_occ_motif(command, "|");
+    int occ_or = count_occ_motif(command, "||");
 
-//     if (space_checker(tmp) || occ >= my_strlen_array(tmp)) {
-//         free_word_array(tmp);
-//         my_fdputstr(2, "Invalid null command.\n");
-//         return 1;
-//     }
-//     free_word_array(tmp);
-//     return 0;
-// }
+    if (space_checker(tmp) || (occ >= my_strlen_array(tmp) && occ_or == 0) ||
+    (occ > my_strlen_array(tmp) && occ_or > 0)) {
+        free_word_array(tmp);
+        my_fdputstr(2, "Invalid null command.\n");
+        return 1;
+    }
+    free_word_array(tmp);
+    return 0;
+}
+
 static int analyse_command(char *command, char **sep)
 {
     int occ;
@@ -72,7 +75,7 @@ static int analyse_command(char *command, char **sep)
             return 0;
         free_word_array(tmp);
     }
-    return 1;
+    return !pipe_error(command);
 }
 
 int error_handling_input(shell_t *shell, char *input)
