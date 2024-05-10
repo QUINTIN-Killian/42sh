@@ -21,18 +21,24 @@ SRC	=	src/error_handling_input.c	\
 		src/shell.c	\
 		src/alias.c	\
 		src/stack.c	\
+		src/variables.c	\
+		src/utility.c	\
 		src/builtin/exit.c	\
 		src/builtin/history.c	\
 		src/builtin/history2.c	\
 		src/builtin/history_getter.c	\
 		src/builtin/my_alias.c	\
 		src/builtin/my_unalias.c	\
+		src/builtin/my_set.c	\
+		src/builtin/my_unset.c	\
 		src/ast/ast.c	\
 		src/ast/ast_parse.c	\
 		src/ast/ast_execute.c	\
 		src/ast/exec_util.c	\
 		src/ast/operator_executor.c	\
 		src/ast/operator_executor2.c	\
+		src/ast/is_builtin.c	\
+		src/ast/ast_execute_node.c	\
 
 OBJ	=	$(SRC:src/%.c=bin/%.o)
 

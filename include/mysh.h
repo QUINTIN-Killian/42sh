@@ -47,14 +47,23 @@ typedef struct alias_s {
     struct alias_s *next;
 } alias_t;
 
+typedef struct variables_s {
+    char *name;
+    char *value;
+    struct variables_s *next;
+} variables_t;
+
 typedef enum {
+    NONE = 0,
     COMMAND,
     PIPE,
     SEMICOLON,
     REDIRECTION_RIGTH,
     REDIRECTION_LEFT,
     DOUBLE_LEFT,
-    DOUBLE_RIGHT
+    DOUBLE_RIGHT,
+    AND_OP,
+    OR_OP
 } TokenType_t;
 
 typedef struct ast_node_s {
@@ -74,7 +83,10 @@ typedef struct shell_s {
     int pipefd[2];
     ast_node_t *ast;
     alias_t *alias;
+    variables_t *variables;
 } shell_t;
+
+
 
 //my_scanf.c :
 char *my_scanf(void);
@@ -153,6 +165,16 @@ int execute_pipe(ast_node_t *node, shell_t *shell);
 int is_builtin(char **args, shell_t *shell);
 void my_exec(char **args, shell_t *shell);
 
+typedef struct operation_t {
+    TokenType_t op;
+    int (*f)(ast_node_t *, shell_t *);
+} operation_t;
+
+int execute_ast_semicolon(ast_node_t *node, shell_t *shell);
+int execute_ast_pipe(ast_node_t *node, shell_t *shell);
+int execute_and_operator(ast_node_t *node, shell_t *shell);
+int execute_or_operator(ast_node_t *node, shell_t *shell);
+
 //builtins
 typedef struct builtin_s {
     char *name;
@@ -173,5 +195,20 @@ void destroy_aliases(alias_t *alias);
 
 //config
 void source_config(shell_t *shell);
+
+//variables
+char *replace_variables(shell_t *shell, char *input);
+
+//utility
+char *string_to_delims(char *input, char *delimiters);
+bool char_in_string(char c, char *string);
+char *concat(char *str1, char *str2);
+
+//my_set
+int my_set(char **args, shell_t *shell);
+int my_unset(char **args, shell_t *shell);
+char *get_variable_value(variables_t *node, char *name);
+variables_t *find_variable(variables_t *node, char *name);
+void destroy_variables(variables_t *node);
 
 #endif

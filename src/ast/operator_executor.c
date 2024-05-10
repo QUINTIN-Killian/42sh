@@ -5,6 +5,7 @@
 ** operator_executor.c
 */
 
+#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "../../include/mysh.h"
@@ -77,8 +78,8 @@ int execute_pipe(ast_node_t *node, shell_t *shell)
         dup2(shell->pipefd[1], STDOUT_FILENO);
         close(shell->pipefd[1]);
         my_exec(args, shell);
-    } else
-        print_res(pid, shell);
+        exit(0);
+    }
     free_word_array(args);
     return pid;
 }

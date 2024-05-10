@@ -32,6 +32,14 @@ static char *clear_str(char *str)
 
 static int pat_to_enum(char *pat)
 {
+    if (my_strcmp(pat, ">>") == 0)
+        return DOUBLE_RIGHT;
+    if (my_strcmp(pat, "<<") == 0)
+        return DOUBLE_LEFT;
+    if (my_strcmp(pat, "&&") == 0)
+        return AND_OP;
+    if (my_strcmp(pat, "||") == 0)
+        return OR_OP;
     if (my_strcmp(pat, ">") == 0)
         return REDIRECTION_RIGTH;
     if (my_strcmp(pat, "<") == 0)
@@ -40,10 +48,6 @@ static int pat_to_enum(char *pat)
         return PIPE;
     if (my_strcmp(pat, ";") == 0)
         return SEMICOLON;
-    if (my_strcmp(pat, ">>") == 0)
-        return DOUBLE_RIGHT;
-    if (my_strcmp(pat, "<<") == 0)
-        return DOUBLE_LEFT;
     return 0;
 }
 
