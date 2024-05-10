@@ -27,7 +27,6 @@
 	161	22:07	echo $?
 	177	22:52	c ; history ; history
 	178	22:53	c ; history ; history ; echo TEST
-	181	22:53	ls
 	184	22:54	alias c clear
 	185	22:54	c
 	188	22:54	history
@@ -37,3 +36,5 @@
 	193	22:55	!!!
 	194	22:55	!-
 	195	22:55	exit
+	196	14:53	ls -R ../../ | grep a
+	203	15:17	ls
