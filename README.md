@@ -1,12 +1,25 @@
 # 42sh
 
-The 42sh project aims to simulate a tcsh terminal.
+A robust C-based implementation of a Unix shell inspired by tcsh, providing a command-line interface for process management and system interaction.
 
 ---
 
 ## 🧠 Description
 
-The goal of the project is to create a Linux terminal, handling commands and imitating the tcsh terminal's behavior.
+This project focuses on recreating the user-facing functionality of a standard Linux terminal. The software serves as an intermediary between the user and the operating system, capable of interpreting commands, managing environment variables, and organizing complex execution flows through a command-line prompt.
+
+User Features
+
+- Command Execution: Launching system binaries and managing their lifecycle from the prompt.
+- Stream Redirection: Directing input and output between files and processes using standard operators.
+- Pipeline Management: Connecting multiple commands to allow data to flow seamlessly from one task to the next.
+- Built-in Commands: A suite of internal tools for navigating the file system and managing the user session.
+
+Interaction Logic
+
+- Environment Handling: Storing and retrieving configuration variables that define the user's workspace.
+- Command History: Tracking previously entered instructions for quick recall and efficiency.
+- Signal Management: Gracefully handling user interruptions and process terminations to maintain shell stability.
 
 ---
 
@@ -40,7 +53,7 @@ make
 ## 👥 Authors
 
 * [@Killian QUINTIN](https://github.com/QUINTIN-Killian)
-* Florian RENAUD
-* William JOLIVET
-* Max ROBERT
-* Laurent GONZALES
+* [@Florian RENAUD](https://github.com/FLOWleplusbeau)
+* [@William JOLIVET](https://github.com/WilliamJlvt)
+* [@Max ROBERT](https://github.com/MaxxRobert)
+* [@Laurent GONZALES](https://github.com/lg-epitech)
