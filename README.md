@@ -1,17 +1,46 @@
-# 42sh project
-Repository for the EPITECH 42sh project.
+# 42sh
 
-## Rules :
-#### Commits standard :
-["ADD"/"FIX"/"FEAT"/"DEL"/"TEST"/"..."] "description" (ex : [FIX] coding style)
-#### Branches :
-- We don't code on the 'main' branch
-- We don't code on the 'dev' branch
-- We create branches with the following name pattern : "ACTION"/"name" (ex : FEAT/right_redirections)
-- We merge our branches on the 'dev' branch and merge 'dev' on 'main' with the agreement of everybody
+The 42sh project aims to simulate a tcsh terminal.
 
-## Links :
-[Trello](https://trello.com/invite/b/PYUBxwPz/ATTI22d4de95a0ea54e0ab2eb3eef8c56ac0BA91765A/42sh)
+---
 
-##### Credits :
-Project created by QUINTIN Killian, ROBERT Max, JOLIVET William & REYNAUD Florian
+## 🧠 Description
+
+The goal of the project is to create a Linux terminal, handling commands and imitating the tcsh terminal's behavior.
+
+---
+
+## 🚀 Getting started
+
+### Installing
+
+**Clone the repository:**
+
+```bash
+git clone https://github.com/QUINTIN-Killian/42sh.git
+cd 42sh
+```
+
+### Executing program
+
+**Compiling:**
+
+```bash
+make
+```
+
+**Executing:**
+
+```bash
+./42sh
+```
+
+---
+
+## 👥 Authors
+
+* [@Killian QUINTIN](https://github.com/QUINTIN-Killian)
+* Florian RENAUD
+* William JOLIVET
+* Max ROBERT
+* Laurent GONZALES
